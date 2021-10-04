@@ -35,14 +35,6 @@ struct WiFiData: Hashable, Codable {
     var UserPreferredOrderTimestamp: Date? = nil
     var WasHiddenBefore: Date? = nil
     
-    func ssidString() -> String {
-        if let ssid = self.SSID {
-            return String(data: ssid, encoding: .utf8)!
-        } else {
-            return "Unknown"
-        }
-    }
-    
     struct CaptiveProfileData: Hashable, Codable {
         var CaptiveNetwork: Bool = false
         var CaptiveWebSheetLoginDate: Date? = nil
@@ -67,5 +59,33 @@ struct WiFiData: Hashable, Codable {
         var ssid: String = ""
     }
     
+    func ssidString() -> String {
+        if let ssid = self.SSID {
+            return String(data: ssid, encoding: .utf8)!
+        } else {
+            return "Unknown"
+        }
+    }
+    
+    func joinedByUserAt() -> String {
+        return dateToString(JoinedByUserAt) ?? "Never from this Device"
+    }
+    
+    func joinedBySystemAt() -> String {
+        return dateToString(JoinedBySystemAt) ?? "Never from this Device"
+    }
+    
+    fileprivate func dateToString(_ d: Date?) -> String? {
+        if d == nil {
+            return nil
+        }
+        let df: DateFormatter = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        return df.string(from: d!)
+    }
+
+
+
 }
 

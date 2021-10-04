@@ -17,7 +17,7 @@ struct WiFiDataDetail: View {
                     .font(.title)
                     .foregroundColor(.primary)
                 HStack {
-                    Text("Added by: "+wifidata.AddReason)
+                    Text("Joined By User At: "+wifidata.joinedByUserAt())
                     Spacer()
                     Text("alskjf")
                 }

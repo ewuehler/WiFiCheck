@@ -196,16 +196,6 @@ func parseWiFiSSID(_ appleWiFiID: String) -> String {
 }
 
 
-fileprivate func dateToString(_ d: Date?) -> String {
-    if d == nil {
-        return ""
-    }
-    let df: DateFormatter = DateFormatter()
-    df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-    
-    return df.string(from: d!)
-}
-
 //class WiFiIdentifier: Equatable {
 //    let wifiKey: String
 //    static func == (lhs: WiFiIdentifier, rhs: WiFiIdentifier) -> Bool { lhs.wifiKey == rhs.wifiKey }
