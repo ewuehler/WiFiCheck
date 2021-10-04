@@ -12,18 +12,6 @@ fileprivate let wifiKnownNetworksFile: String = "com.apple.wifi.known-networks.p
 
 var wifidatalist: Array<WiFiData> = load(systemConfigurationFolder+"/"+wifiKnownNetworksFile)
 
-func xxload<T: Decodable>(_ filename: String) -> T {
-    
-    let data: Data = FileManager.default.contents(atPath: filename)!
-    
-    do {
-        return try PropertyListDecoder().decode(T.self, from: data)
-    } catch {
-        fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
-    }
-    
-}
-
 // Known PLIST Keys
 
 let AddReason = "AddReason"
@@ -218,21 +206,28 @@ fileprivate func dateToString(_ d: Date?) -> String {
     return df.string(from: d!)
 }
 
+//class WiFiIdentifier: Equatable {
+//    let wifiKey: String
+//    static func == (lhs: WiFiIdentifier, rhs: WiFiIdentifier) -> Bool { lhs.wifiKey == rhs.wifiKey }
+//    init(_ wifiKey: String) { self.wifiKey = wifiKey }
+//}
+
 
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
-    print("filename: \(filename)")
-    print("exists: \(FileManager.default.fileExists(atPath: filename))")
+//    print("filename: \(filename)")
+//    print("exists: \(FileManager.default.fileExists(atPath: filename))")
     let _fileurl = URL(fileURLWithPath: filename)
     let _data = try! Data(contentsOf: _fileurl)
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
 //    let _rawContent = NSDictionary(contentsOfFile: filename)
-    print("\(_rawContent)")
+//    print("\(_rawContent)")
     var _knownNetworks: Array<WiFiData> = []
     let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
+//    var count: Int = 0
     for (wifiKey, valueDict) in knownNetworks {
-        print("key: \(wifiKey)")
-        print("value: \(valueDict)")
+//        print("key: \(wifiKey)")
+//        print("value: \(valueDict)")
         let value = valueDict as! Dictionary<String,AnyObject>
         var wifidata = WiFiData()
         wifidata.WiFiID = wifiKey

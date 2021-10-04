@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
     var body: some View {
         NavigationView {
@@ -19,10 +20,10 @@ struct ContentView: View {
 struct ListPane: View {
     var body: some View {
         VStack {
-            Text("Items")
+            Text("WiFi Networks")
             List(0..<wifidatalist.count, id: \.self) { i in
-                WiFiDataRow(wifidata: wifidatalist[i])
-            }
+                NavigationLink(destination: WiFiDataDetail(wifidata: wifidatalist[i])) {                WiFiDataRow(wifidata: wifidatalist[i])
+                }            }
             .listStyle(SidebarListStyle())
             Spacer()
         }
@@ -32,7 +33,8 @@ struct ListPane: View {
 
 struct DetailPane: View {
     var body: some View {
-        Text("Details").frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        WiFiDataDetail(wifidata: wifidatalist[0])
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }
 

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct WiFiData: Hashable, Codable {
-    
+
     var WiFiID: String = "InvalidID"
     var AddReason: String = ""
     var AddedAt: Date? = nil
@@ -26,7 +26,7 @@ struct WiFiData: Hashable, Codable {
     var SystemMode: Bool = false
     var UpdatedAt: Date? = nil
     
-    // __OSSpecific__
+//    var __OSSpecific__: Dictionary
     var BSSIDList: Array<BSSIDData>? = nil
     var ChannelHistory: Array<ChannelData>? = nil
     var CollocatedGroup: Array<CollocatedGroupData>? = nil

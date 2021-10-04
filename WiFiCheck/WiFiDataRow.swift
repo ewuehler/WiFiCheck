@@ -21,6 +21,11 @@ struct WiFiDataRow: View {
 
 struct WiFiDataRow_Previews: PreviewProvider {
     static var previews: some View {
-        WiFiDataRow(wifidata: wifidatalist[0])
+        Group {
+            WiFiDataRow(wifidata: wifidatalist[0])
+            WiFiDataRow(wifidata: wifidatalist[1])
+            WiFiDataRow(wifidata: wifidatalist[2])
+        }
+        .previewLayout(.fixed(width:250, height: 70))
     }
 }
