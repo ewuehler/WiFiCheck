@@ -20,6 +20,7 @@
 		7B0A252D270A634200A51D79 /* WiFiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiData.swift; sourceTree = "<group>"; };
 		7B0A252F270A660200A51D79 /* WiFiDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataManager.swift; sourceTree = "<group>"; };
 		7B0A2531270A6E8B00A51D79 /* WiFiDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataRow.swift; sourceTree = "<group>"; };
+		7B0A2539270A7F3D00A51D79 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7B3DEFD726EBF0DC007BE881 /* WiFiCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WiFiCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B3DEFDA26EBF0DC007BE881 /* WiFiCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiCheckApp.swift; sourceTree = "<group>"; };
 		7B3DEFDC26EBF0DC007BE881 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,9 +41,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B0A2538270A7F1B00A51D79 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				7B0A2539270A7F3D00A51D79 /* README.md */,
+			);
+			name = Info;
+			sourceTree = "<group>";
+		};
 		7B3DEFCE26EBF0DC007BE881 = {
 			isa = PBXGroup;
 			children = (
+				7B0A2538270A7F1B00A51D79 /* Info */,
 				7B3DEFD926EBF0DC007BE881 /* WiFiCheck */,
 				7B3DEFD826EBF0DC007BE881 /* Products */,
 			);
