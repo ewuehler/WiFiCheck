@@ -17,16 +17,27 @@ struct WiFiDataDetail: View {
                     .font(.title)
                     .foregroundColor(.primary)
                 HStack {
-                    Text("Joined By User At: "+wifidata.joinedByUserAt())
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Joined by User at: ")
+                            Text(wifidata.joinedByUserAt())
+                        }
+                        HStack {
+                            Text("Joined by System at:")
+                            Text(wifidata.joinedBySystemAt())
+                        }
+                    }
                     Spacer()
-                    Text("alskjf")
+                    VStack(alignment: .trailing) {
+                        Text("Added by: "+wifidata.AddReason)
+                        Text("Added at: "+wifidata.addedAt())
+                    }
                 }
                 .font(.subheadline)
                 .foregroundColor(.secondary)
-                
                 Divider()
-                Text("about").font(.title2)
-                Text("description")
+                Text(wifidata.SupportedSecurityTypes).font(.title2)
+                Text(wifidata.RoamingProfileType)
             }
             .padding()
             

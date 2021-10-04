@@ -75,6 +75,10 @@ struct WiFiData: Hashable, Codable {
         return dateToString(JoinedBySystemAt) ?? "Never from this Device"
     }
     
+    func addedAt() -> String {
+        return dateToString(AddedAt) ?? "Unknown"
+    }
+    
     fileprivate func dateToString(_ d: Date?) -> String? {
         if d == nil {
             return nil

@@ -20,7 +20,7 @@ struct ContentView: View {
 struct ListPane: View {
     var body: some View {
         VStack {
-            Text("WiFi Networks")
+            Text("Known Networks")
             List(0..<wifidatalist.count, id: \.self) { i in
                 NavigationLink(destination: WiFiDataDetail(wifidata: wifidatalist[i])) {                WiFiDataRow(wifidata: wifidatalist[i])
                 }            }
