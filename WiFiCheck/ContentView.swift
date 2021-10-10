@@ -12,7 +12,16 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ListPane()
-            DetailPane()
+            Text("Select WiFi Network")
+//            VStack {
+//                Text("Known WiFi Networks").frame(maxWidth: .infinity, alignment: .leading)
+//                List(wifidatalist) { wifidata in
+//                    NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)) {
+//                        WiFiDataRow(wifidata: wifidata)
+//                    }
+//                }
+//                .listStyle(SidebarListStyle())
+//            }
         }
     }
 }
@@ -20,12 +29,12 @@ struct ContentView: View {
 struct ListPane: View {
     var body: some View {
         VStack {
-            Text("Known Networks")
-            List(0..<wifidatalist.count, id: \.self) { i in
-                NavigationLink(destination: WiFiDataDetail(wifidata: wifidatalist[i])) {                WiFiDataRow(wifidata: wifidatalist[i])
-                }            }
-            .listStyle(SidebarListStyle())
-            Spacer()
+            Text("WiFi Networks").bold()
+            List(wifidatalist) { wifidata in
+                NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)){
+                    WiFiDataRow(wifidata: wifidata)
+                }
+            }
         }
         .frame(minWidth: 100, idealWidth: 250, maxWidth: 350, minHeight: 400, idealHeight: .infinity, maxHeight: .infinity)
     }
@@ -36,6 +45,31 @@ struct DetailPane: View {
         WiFiDataDetail(wifidata: wifidatalist[0])
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
+}
+
+enum SortableMenu: Int, CaseIterable, Identifiable {
+    var id: Int {
+        return self.rawValue
+    }
+    
+    case preferredOrder, recent, alphabetical
+    
+    var title: String {
+        switch self {
+        case .preferredOrder: return "Preferred"
+        case .recent: return "Recent"
+        case .alphabetical: return "Alphabetical"
+        }
+    }
+    
+    var image: String {
+        switch self {
+        case .preferredOrder: return "star.fill"
+        case .recent: return "clock.fill"
+        case .alphabetical: return "square.stack.fill"
+        }
+    }
+    
 }
 
 

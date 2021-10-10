@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
-struct WiFiData: Hashable, Codable {
+struct WiFiData: Hashable, Codable, Identifiable {
 
+    var id: Self { self }
+    
     var WiFiID: String = "InvalidID"
     var AddReason: String = ""
     var AddedAt: Date? = nil

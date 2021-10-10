@@ -12,9 +12,51 @@ struct WiFiDataRow: View {
     var wifidata: WiFiData
     
     var body: some View {
-        HStack {
-            Text(wifidata.ssidString())
-            Spacer()
+        if wifidata.SupportedSecurityTypes.contains("WPA3") {
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(.green)
+        } else if (wifidata.SupportedSecurityTypes.contains("WPA") && !wifidata.SupportedSecurityTypes.contains("WPA3")) {
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(Color(NSColor.systemTeal))
+        } else if wifidata.SupportedSecurityTypes.contains("WEP") {
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(.yellow)
+        } else if wifidata.SupportedSecurityTypes.contains("Open") {
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(.red)
+        } else {
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(.gray)
         }
     }
 }

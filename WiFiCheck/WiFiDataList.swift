@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WiFiDataList: View {
     var body: some View {
-        List(wifidatalist, id: \.WiFiID) { wifidata in
+        List(wifidatalist) { wifidata in
             WiFiDataRow(wifidata: wifidata)
         }
     }
