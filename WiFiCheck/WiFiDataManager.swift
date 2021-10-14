@@ -203,6 +203,39 @@ func parseWiFiSSID(_ appleWiFiID: String) -> String {
 //}
 
 
+func sortByPreferredOrder(_ items: [WiFiData]) -> [WiFiData] {
+    items.sorted { a, b in
+        var res = false
+        if a.UserPreferredOrderTimestamp == nil || b.UserPreferredOrderTimestamp == nil {
+            res = a.ssidString() < b.ssidString()
+        } else {
+            res = a.UserPreferredOrderTimestamp! < b.UserPreferredOrderTimestamp!
+        }
+        return res
+    }
+}
+
+func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
+    items.sorted { a, b in
+        var res = false
+        if a.JoinedByUserAt == nil || b.JoinedByUserAt == nil {
+            res = a.ssidString() < b.ssidString()
+        } else {
+            res = a.JoinedByUserAt! < b.JoinedByUserAt!
+        }
+        return res
+    }
+}
+
+func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
+    items.sorted { a, b in
+        var res = false
+        res = a.ssidString() < b.ssidString()
+        return res
+    }
+}
+
+
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
 //    print("filename: \(filename)")
