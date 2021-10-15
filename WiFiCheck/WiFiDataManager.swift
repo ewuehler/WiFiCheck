@@ -206,11 +206,7 @@ func parseWiFiSSID(_ appleWiFiID: String) -> String {
 func sortByPreferredOrder(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
         var res = false
-        if a.UserPreferredOrderTimestamp == nil || b.UserPreferredOrderTimestamp == nil {
-            res = a.ssidString() < b.ssidString()
-        } else {
-            res = a.UserPreferredOrderTimestamp! < b.UserPreferredOrderTimestamp!
-        }
+        res = a.userPreferredOrder() > b.userPreferredOrder()
         return res
     }
 }
@@ -219,7 +215,7 @@ func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
         var res = false
         if a.JoinedByUserAt == nil || b.JoinedByUserAt == nil {
-            res = a.ssidString() < b.ssidString()
+            res = false
         } else {
             res = a.JoinedByUserAt! < b.JoinedByUserAt!
         }
@@ -244,7 +240,7 @@ func load(_ filename: String) -> Array<WiFiData> {
     let _data = try! Data(contentsOf: _fileurl)
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
 //    let _rawContent = NSDictionary(contentsOfFile: filename)
-//    print("\(_rawContent)")
+    print("\(_rawContent)")
     var _knownNetworks: Array<WiFiData> = []
     let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
 //    var count: Int = 0

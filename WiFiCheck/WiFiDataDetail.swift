@@ -38,6 +38,7 @@ struct WiFiDataDetail: View {
                 Divider()
                 Text(wifidata.SupportedSecurityTypes).font(.title2)
                 Text(wifidata.RoamingProfileType)
+                Text("User Preferred Order: "+wifidata.userPreferredOrderTimestamp())
             }
             .padding()
             

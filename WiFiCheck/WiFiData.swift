@@ -77,6 +77,18 @@ struct WiFiData: Hashable, Codable, Identifiable {
         return dateToString(JoinedBySystemAt) ?? "Never from this Device"
     }
     
+    func userPreferredOrderTimestamp() -> String {
+        return dateToString(UserPreferredOrderTimestamp) ?? "Never from this Device"
+    }
+    
+    func userPreferredOrder() -> Int64 {
+        if UserPreferredOrderTimestamp == nil {
+            return 0
+        } else {
+            return UserPreferredOrderTimestamp!.currentTimeMillis()
+        }
+    }
+    
     func addedAt() -> String {
         return dateToString(AddedAt) ?? "Unknown"
     }
