@@ -36,9 +36,24 @@ struct WiFiDataDetail: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 Divider()
-                Text(wifidata.SupportedSecurityTypes).font(.title2)
-                Text(wifidata.RoamingProfileType)
-                Text("User Preferred Order: "+wifidata.userPreferredOrderTimestamp())
+                VStack(alignment: .leading) {
+                    Text("Security: "+wifidata.SupportedSecurityTypes).font(.title2)
+                    Text("Roaming Profile Type: "+wifidata.RoamingProfileType)
+                    Text("User Preferred Order: \(wifidata.userPreferredOrderTimestamp())")
+                }
+                VStack(alignment: .leading) {
+                    let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
+                    Text("Is Captive: "+captiveStr)
+                    if (wifidata.isCaptive()) {
+                        Text("Captive Login Date: "+wifidata.captiveLogin())
+                    }
+                    Text("Hidden: "+String(wifidata.Hidden))
+                    Text("System Mode: "+String(wifidata.SystemMode))
+                    Text("Disabled: "+String(wifidata.TemporarilyDisabled))
+                }
+                Divider()
+                CollocatedGroupView(collocatedGroup: wifidata.CollocatedGroup)
+
             }
             .padding()
             
@@ -47,6 +62,20 @@ struct WiFiDataDetail: View {
     }
 }
 
+struct CollocatedGroupView: View {
+    var collocatedGroup: Array<WiFiData.CollocatedGroupData> = []
+    
+    
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Collocated Group").bold()
+//            for cgd in collocatedGroup {
+//                Text("Channel: \(String(cgd.Channel))")
+//            }
+        }
+    }
+}
 
 struct WiFiDataDetail_Previews: PreviewProvider {
     static var previews: some View {

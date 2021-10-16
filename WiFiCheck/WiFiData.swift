@@ -15,7 +15,7 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var WiFiID: String = "InvalidID"
     var AddReason: String = ""
     var AddedAt: Date? = nil
-    var CaptiveProfile: Array<CaptiveProfileData>? = nil
+    var CaptiveProfile: Array<CaptiveProfileData> = []
     
     var Hidden: Bool = false
     
@@ -29,16 +29,16 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var UpdatedAt: Date? = nil
     
 //    var __OSSpecific__: Dictionary
-    var BSSIDList: Array<BSSIDData>? = nil
-    var ChannelHistory: Array<ChannelData>? = nil
-    var CollocatedGroup: Array<CollocatedGroupData>? = nil
+    var BSSIDList: Array<BSSIDData> = []
+    var ChannelHistory: Array<ChannelData> = []
+    var CollocatedGroup: Array<CollocatedGroupData> = []
     var RoamingProfileType: String = ""
     var TemporarilyDisabled: Bool = false
     var UserPreferredOrderTimestamp: Date? = nil
     var WasHiddenBefore: Date? = nil
     
     struct CaptiveProfileData: Hashable, Codable {
-        var CaptiveNetwork: Bool = false
+        var CaptiveNetwork: Int = 0
         var CaptiveWebSheetLoginDate: Date? = nil
     }
     
@@ -82,11 +82,27 @@ struct WiFiData: Hashable, Codable, Identifiable {
     }
     
     func userPreferredOrder() -> Int64 {
-        if UserPreferredOrderTimestamp == nil {
+        if AddedAt == nil {
             return 0
         } else {
-            return UserPreferredOrderTimestamp!.currentTimeMillis()
+            return AddedAt!.currentTimeMillis()
         }
+    }
+    
+    func isCaptive() -> Bool {
+        let cpd: CaptiveProfileData? = CaptiveProfile?[0]
+        if cpd != nil {
+            return !(cpd!.CaptiveNetwork == 0)
+        }
+        return false
+    }
+    
+    func captiveLogin() -> String {
+        let cpd: CaptiveProfileData? = CaptiveProfile?[0]
+        if cpd != nil {
+            return dateToString(cpd!.CaptiveWebSheetLoginDate) ?? "Unknown"
+        }
+        return "Not Captive"
     }
     
     func addedAt() -> String {

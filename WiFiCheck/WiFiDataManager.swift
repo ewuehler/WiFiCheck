@@ -96,7 +96,7 @@ fileprivate func findCaptiveProfile(_ value: AnyObject?) -> Array<WiFiData.Capti
     } else {
         let dict: Dictionary = value as! Dictionary<String,AnyObject>
         var cp = WiFiData.CaptiveProfileData()
-        cp.CaptiveNetwork = findBool(dict[CaptiveNetwork])
+        cp.CaptiveNetwork = findInt(dict[CaptiveNetwork])
         cp.CaptiveWebSheetLoginDate = findDate(dict[CaptiveWebSheetLoginDate]) ?? nil
         cpList.append(cp)
     }
