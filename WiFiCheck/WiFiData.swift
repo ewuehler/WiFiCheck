@@ -37,17 +37,25 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var UserPreferredOrderTimestamp: Date? = nil
     var WasHiddenBefore: Date? = nil
     
-    struct CaptiveProfileData: Hashable, Codable {
+
+    struct CaptiveProfileData: Hashable, Codable, Identifiable {
+        var id: Self { self }
         var CaptiveNetwork: Int = 0
         var CaptiveWebSheetLoginDate: Date? = nil
     }
-    
-    struct ChannelData: Hashable, Codable {
+
+    struct ChannelData: Hashable, Codable, Identifiable {
+        var id: Self { self }
         var Channel: Int = -1
         var Timestamp: Date? = nil
+        
+        func joinedTime() -> String {
+            return Utils.dateToString(Timestamp) ?? "Unknown"
+        }
     }
-    
-    struct BSSIDData: Hashable, Codable {
+
+    struct BSSIDData: Hashable, Codable, Identifiable {
+        var id: Self { self }
         var LEAKY_AP_BSSID: String = ""
         var LEAKY_AP_LEARNED_DATA: Data = Data() // No clue what this means yet
         var Manufacturer: String = ""
@@ -55,12 +63,13 @@ struct WiFiData: Hashable, Codable, Identifiable {
         var normalizedOUI: String? = nil
         var SSID: String = ""
     }
-    
-    struct CollocatedGroupData: Hashable, Codable {
-        var id: String = ""
+
+    struct CollocatedGroupData: Hashable, Codable, Identifiable {
+        var id: Self { self }
         var ssid: String = ""
     }
-    
+
+
     func ssidString() -> String {
         if let ssid = self.SSID {
             return String(data: ssid, encoding: .utf8)!
@@ -70,15 +79,15 @@ struct WiFiData: Hashable, Codable, Identifiable {
     }
     
     func joinedByUserAt() -> String {
-        return dateToString(JoinedByUserAt) ?? "Never from this Device"
+        return Utils.dateToString(JoinedByUserAt) ?? "Never from this Device"
     }
     
     func joinedBySystemAt() -> String {
-        return dateToString(JoinedBySystemAt) ?? "Never from this Device"
+        return Utils.dateToString(JoinedBySystemAt) ?? "Never from this Device"
     }
     
     func userPreferredOrderTimestamp() -> String {
-        return dateToString(UserPreferredOrderTimestamp) ?? "Never from this Device"
+        return Utils.dateToString(UserPreferredOrderTimestamp) ?? "Never from this Device"
     }
     
     func userPreferredOrder() -> Int64 {
@@ -90,7 +99,10 @@ struct WiFiData: Hashable, Codable, Identifiable {
     }
     
     func isCaptive() -> Bool {
-        let cpd: CaptiveProfileData? = CaptiveProfile?[0]
+        if CaptiveProfile.count == 0 {
+            return false
+        }
+        let cpd: CaptiveProfileData? = CaptiveProfile[0]
         if cpd != nil {
             return !(cpd!.CaptiveNetwork == 0)
         }
@@ -98,28 +110,19 @@ struct WiFiData: Hashable, Codable, Identifiable {
     }
     
     func captiveLogin() -> String {
-        let cpd: CaptiveProfileData? = CaptiveProfile?[0]
-        if cpd != nil {
-            return dateToString(cpd!.CaptiveWebSheetLoginDate) ?? "Unknown"
+        if CaptiveProfile.count == 0 {
+            return "No Login Date"
         }
-        return "Not Captive"
+        let cpd: CaptiveProfileData? = CaptiveProfile[0]
+        if cpd != nil {
+            return Utils.dateToString(cpd!.CaptiveWebSheetLoginDate) ?? "Unknown"
+        }
+        return "No Login Date"
     }
     
     func addedAt() -> String {
-        return dateToString(AddedAt) ?? "Unknown"
+        return Utils.dateToString(AddedAt) ?? "Unknown"
     }
-    
-    fileprivate func dateToString(_ d: Date?) -> String? {
-        if d == nil {
-            return nil
-        }
-        let df: DateFormatter = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        return df.string(from: d!)
-    }
-
-
+   
 
 }
-

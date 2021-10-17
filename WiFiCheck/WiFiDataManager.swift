@@ -89,10 +89,10 @@ fileprivate func findData(_ value: AnyObject?) -> Data? {
 }
 
 
-fileprivate func findCaptiveProfile(_ value: AnyObject?) -> Array<WiFiData.CaptiveProfileData>? {
+fileprivate func findCaptiveProfile(_ value: AnyObject?) -> Array<WiFiData.CaptiveProfileData> {
     var cpList = Array<WiFiData.CaptiveProfileData>()
     if (value == nil) {
-        return nil
+        return cpList
     } else {
         let dict: Dictionary = value as! Dictionary<String,AnyObject>
         var cp = WiFiData.CaptiveProfileData()
@@ -103,10 +103,10 @@ fileprivate func findCaptiveProfile(_ value: AnyObject?) -> Array<WiFiData.Capti
     return cpList
 }
 
-fileprivate func findBSSIDList(_ value: AnyObject?) -> Array<WiFiData.BSSIDData>? {
+fileprivate func findBSSIDList(_ value: AnyObject?) -> Array<WiFiData.BSSIDData> {
     var bssidList = Array<WiFiData.BSSIDData>()
     if (value == nil) {
-        return nil
+        return bssidList
     } else {
         let arr: Array = value as! Array<Dictionary<String,AnyObject>>
         for dict in arr {
@@ -121,11 +121,11 @@ fileprivate func findBSSIDList(_ value: AnyObject?) -> Array<WiFiData.BSSIDData>
     return bssidList
 }
 
-fileprivate func findChannelHistory(_ value: AnyObject?) -> Array<WiFiData.ChannelData>? {
+fileprivate func findChannelHistory(_ value: AnyObject?) -> Array<WiFiData.ChannelData> {
     
     var channelHistory = Array<WiFiData.ChannelData>()
     if value == nil {
-        return nil
+        return channelHistory
     } else {
         let arr: Array = value as! Array<Dictionary<String,AnyObject>>
         for dict in arr {
@@ -140,15 +140,14 @@ fileprivate func findChannelHistory(_ value: AnyObject?) -> Array<WiFiData.Chann
     
 }
 
-fileprivate func findCollocatedGroup(_ value: AnyObject?) -> Array<WiFiData.CollocatedGroupData>? {
+fileprivate func findCollocatedGroup(_ value: AnyObject?) -> Array<WiFiData.CollocatedGroupData> {
     var collocatedGroup = Array<WiFiData.CollocatedGroupData>()
     if (value == nil) {
-        return nil
+        return collocatedGroup
     } else {
         let arr: Array = value as! Array<String>
         for str in arr {
             var cg = WiFiData.CollocatedGroupData()
-            cg.id = str
             cg.ssid = parseWiFiSSID(str)
             collocatedGroup.append(cg)
         }

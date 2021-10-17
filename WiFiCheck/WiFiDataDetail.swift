@@ -51,9 +51,18 @@ struct WiFiDataDetail: View {
                     Text("System Mode: "+String(wifidata.SystemMode))
                     Text("Disabled: "+String(wifidata.TemporarilyDisabled))
                 }
-                Divider()
-                CollocatedGroupView(collocatedGroup: wifidata.CollocatedGroup)
-
+                if (wifidata.CollocatedGroup.count > 0) {
+                    Divider()
+                    CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
+                }
+                if (wifidata.ChannelHistory.count > 0) {
+                    Divider()
+                    ChannelHistoryView(channelData: wifidata.ChannelHistory)
+                }
+                if (wifidata.BSSIDList.count > 0) {
+                    Divider()
+                    BSSIDListView(bssidData: wifidata.BSSIDList)
+                }
             }
             .padding()
             
@@ -62,17 +71,45 @@ struct WiFiDataDetail: View {
     }
 }
 
+
 struct CollocatedGroupView: View {
-    var collocatedGroup: Array<WiFiData.CollocatedGroupData> = []
-    
-    
+    var collocatedGroups: [WiFiData.CollocatedGroupData]
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("Collocated Group").bold()
-//            for cgd in collocatedGroup {
-//                Text("Channel: \(String(cgd.Channel))")
-//            }
+        }
+        ForEach(collocatedGroups) { cgd in
+            Text("\(String(cgd.ssid))")
+        }
+    }
+}
+
+struct ChannelHistoryView: View {
+    var channelData: [WiFiData.ChannelData]
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("Channel History").bold()
+            ForEach(channelData) { cd in
+                HStack() {
+                    Text("\(cd.Channel)")
+                    Text("\(cd.joinedTime())")
+                }
+            }
+        }
+    }
+}
+
+struct BSSIDListView: View {
+    var bssidData: [WiFiData.BSSIDData]
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("BSSID").bold()
+            ForEach(bssidData) { b in
+                Text("\(b.LEAKY_AP_BSSID)")
+            }
         }
     }
 }
