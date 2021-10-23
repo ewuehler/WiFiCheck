@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B0315F427247A7B00D775ED /* NetworkSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0315F327247A7B00D775ED /* NetworkSetup.swift */; };
 		7B0A252E270A634200A51D79 /* WiFiData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0A252D270A634200A51D79 /* WiFiData.swift */; };
 		7B0A2530270A660200A51D79 /* WiFiDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0A252F270A660200A51D79 /* WiFiDataManager.swift */; };
 		7B0A2532270A6E8B00A51D79 /* WiFiDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0A2531270A6E8B00A51D79 /* WiFiDataRow.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7B0315F327247A7B00D775ED /* NetworkSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSetup.swift; sourceTree = "<group>"; };
 		7B0A252D270A634200A51D79 /* WiFiData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiData.swift; sourceTree = "<group>"; };
 		7B0A252F270A660200A51D79 /* WiFiDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataManager.swift; sourceTree = "<group>"; };
 		7B0A2531270A6E8B00A51D79 /* WiFiDataRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataRow.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				7B3DEFDA26EBF0DC007BE881 /* WiFiCheckApp.swift */,
 				7B3DEFDC26EBF0DC007BE881 /* ContentView.swift */,
 				7B6FE0E62719408C00CF5CEB /* Utils.swift */,
+				7B0315F327247A7B00D775ED /* NetworkSetup.swift */,
 				7B0A252D270A634200A51D79 /* WiFiData.swift */,
 				7B0A2531270A6E8B00A51D79 /* WiFiDataRow.swift */,
 				7B2086BE270A9154007A6500 /* WiFiDataList.swift */,
@@ -189,6 +192,7 @@
 				7B3DEFDD26EBF0DC007BE881 /* ContentView.swift in Sources */,
 				7B2086BF270A9154007A6500 /* WiFiDataList.swift in Sources */,
 				7B5A4388272362CE00E4D73F /* WiFiDateBox.swift in Sources */,
+				7B0315F427247A7B00D775ED /* NetworkSetup.swift in Sources */,
 				7B3DEFDB26EBF0DC007BE881 /* WiFiCheckApp.swift in Sources */,
 				7B2086C1270A991A007A6500 /* WiFiDataDetail.swift in Sources */,
 				7B6FE0E72719408C00CF5CEB /* Utils.swift in Sources */,

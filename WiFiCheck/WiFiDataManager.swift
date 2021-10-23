@@ -10,8 +10,6 @@ import Foundation
 
 fileprivate let systemConfigurationFolder: String = "/Library/Preferences"
 fileprivate let wifiKnownNetworksFile: String = "com.apple.wifi.known-networks.plist"
-//fileprivate let ncprefs: String = "/Users/ewuehler/Library/Preferences/com.apple.ncprefs.plist"
-fileprivate let airportCommand: String = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
 
 var wifidatalist: Array<WiFiData> = sortByPreferredOrder(load(systemConfigurationFolder+"/"+wifiKnownNetworksFile))
@@ -233,7 +231,7 @@ func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
 func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
         var res = false
-        res = a.ssidString() < b.ssidString()
+        res = a.ssidString().lowercased() < b.ssidString().lowercased()
         return res
     }
 }
@@ -242,27 +240,19 @@ func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
     
-//    let _ncfileurl = URL(fileURLWithPath: "/Users/ewuehler/Library/Preferences/ByHost/com.apple.Bluetooth.8BF40F52-1077-56B7-B9C3-5DD4F4703A23.plist")
-//    let _ncdata = try! Data(contentsOf: _ncfileurl)
-//    let _ncprefs = try! PropertyListSerialization.propertyList(from: _ncdata, options: .mutableContainersAndLeaves, format: nil)
-//    print("\(_ncprefs)")
-    
-//    print("filename: \(filename)")
-//    print("exists: \(FileManager.default.fileExists(atPath: filename))")
     let _fileurl = URL(fileURLWithPath: filename)
     let _data = try! Data(contentsOf: _fileurl)
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
-//    let _rawContent = NSDictionary(contentsOfFile: filename)
-//    print("\(_rawContent)")
     
-    let preferredNetworks: Dictionary<String,Int> = Utils.getPreferredNetworkOrder()
+    let networksetup = NetworkSetup()
+    print("\(networksetup.getAirportNetwork())")
+    let preferredNetworks: Dictionary<String,Int> = networksetup.getPreferredNetworkOrder()
+    print("\(preferredNetworks)")
 
+    
     var _knownNetworks: Array<WiFiData> = []
     let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
-//    var count: Int = 0
     for (wifiKey, valueDict) in knownNetworks {
-//        print("key: \(wifiKey)")
-//        print("value: \(valueDict)")
         let value = valueDict as! Dictionary<String,AnyObject>
         var wifidata = WiFiData()
         wifidata.WiFiID = wifiKey
@@ -288,7 +278,7 @@ func load(_ filename: String) -> Array<WiFiData> {
         wifidata.WasHiddenBefore = findDate(osvalue[WasHiddenBefore])
       
         // Set preferred order?
-        wifidata.PreferredOrder = preferredNetworks[wifidata.ssidString()] ?? -1
+        wifidata.PreferredOrder = preferredNetworks[wifidata.ssidString()] ?? Int.max
         
         _knownNetworks.append(wifidata)
     }
