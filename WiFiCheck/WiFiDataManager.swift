@@ -7,11 +7,14 @@
 
 import Foundation
 
+
 fileprivate let systemConfigurationFolder: String = "/Library/Preferences"
 fileprivate let wifiKnownNetworksFile: String = "com.apple.wifi.known-networks.plist"
 //fileprivate let ncprefs: String = "/Users/ewuehler/Library/Preferences/com.apple.ncprefs.plist"
+fileprivate let airportCommand: String = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
-var wifidatalist: Array<WiFiData> = load(systemConfigurationFolder+"/"+wifiKnownNetworksFile)
+
+var wifidatalist: Array<WiFiData> = sortByPreferredOrder(load(systemConfigurationFolder+"/"+wifiKnownNetworksFile))
 
 // Known PLIST Keys
 
@@ -205,21 +208,25 @@ func parseWiFiSSID(_ appleWiFiID: String) -> String {
 
 func sortByPreferredOrder(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
-        var res = false
-        res = a.userPreferredOrder() > b.userPreferredOrder()
-        return res
+        return a.PreferredOrder < b.PreferredOrder
     }
 }
 
 func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
-        var res = false
-        if a.JoinedByUserAt == nil || b.JoinedByUserAt == nil {
-            res = false
+        if a.joinedByUserAt() == b.joinedByUserAt() {
+            if a.joinedBySystemAt() == b.joinedBySystemAt() {
+                if a.addedAt() == b.addedAt() {
+                    return a.ssidString() < b.ssidString()
+                } else {
+                    return a.addedAt().moreRecentThan(b.addedAt())
+                }
+            } else {
+                return a.joinedBySystemAt().moreRecentThan(b.joinedBySystemAt())
+            }
         } else {
-            res = a.JoinedByUserAt! < b.JoinedByUserAt!
+            return a.joinedByUserAt().moreRecentThan(b.joinedByUserAt())
         }
-        return res
     }
 }
 
@@ -235,7 +242,7 @@ func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
     
-//    let _ncfileurl = URL(fileURLWithPath: ncprefs)
+//    let _ncfileurl = URL(fileURLWithPath: "/Users/ewuehler/Library/Preferences/ByHost/com.apple.Bluetooth.8BF40F52-1077-56B7-B9C3-5DD4F4703A23.plist")
 //    let _ncdata = try! Data(contentsOf: _ncfileurl)
 //    let _ncprefs = try! PropertyListSerialization.propertyList(from: _ncdata, options: .mutableContainersAndLeaves, format: nil)
 //    print("\(_ncprefs)")
@@ -247,6 +254,9 @@ func load(_ filename: String) -> Array<WiFiData> {
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
 //    let _rawContent = NSDictionary(contentsOfFile: filename)
 //    print("\(_rawContent)")
+    
+    let preferredNetworks: Dictionary<String,Int> = Utils.getPreferredNetworkOrder()
+
     var _knownNetworks: Array<WiFiData> = []
     let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
 //    var count: Int = 0
@@ -277,7 +287,20 @@ func load(_ filename: String) -> Array<WiFiData> {
         wifidata.UserPreferredOrderTimestamp = findDate(osvalue[UserPreferredOrderTimestamp])
         wifidata.WasHiddenBefore = findDate(osvalue[WasHiddenBefore])
       
+        // Set preferred order?
+        wifidata.PreferredOrder = preferredNetworks[wifidata.ssidString()] ?? -1
+        
         _knownNetworks.append(wifidata)
     }
     return _knownNetworks
 }
+
+
+func dumpPList(_ filename: String) -> Bool {
+    let _fileurl = URL(fileURLWithPath: filename)
+    let _data = try! Data(contentsOf: _fileurl)
+    let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
+    print("\(_rawContent)")
+    return true
+}
+

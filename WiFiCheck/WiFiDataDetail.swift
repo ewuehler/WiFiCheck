@@ -49,7 +49,7 @@ struct WiFiDataDetail: View {
                     Spacer()
                     VStack(alignment: .trailing) {
                         Text("Added by: "+wifidata.AddReason)
-                        Text("Added at: "+wifidata.addedAt())
+                        Text("Added at: "+wifidata.addedAtString())
                     }
                 }
                 Divider()

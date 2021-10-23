@@ -38,6 +38,8 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var UserPreferredOrderTimestamp: Date? = nil
     var WasHiddenBefore: Date? = nil
     
+    var PreferredOrder: Int = Int.max
+    
     enum SecurityType {
         case unknown, open, wep, wpa, wpa2, wpa3
     }
@@ -98,13 +100,30 @@ struct WiFiData: Hashable, Codable, Identifiable {
         }
     }
     
-    func joinedByUserAt() -> String {
+    func joinedByUserAt() -> Date {
+        return JoinedByUserAt ?? Date(timeIntervalSince1970: 0)
+    }
+    
+    func joinedByUserAtString() -> String {
         return Utils.dateToString(JoinedByUserAt) ?? "Never from this Device"
     }
     
-    func joinedBySystemAt() -> String {
+    func joinedBySystemAt() -> Date {
+        return JoinedBySystemAt ?? Date(timeIntervalSince1970: 0)
+    }
+    
+    func joinedBySystemAtString() -> String {
         return Utils.dateToString(JoinedBySystemAt) ?? "Never from this Device"
     }
+    
+    func addedAt() -> Date {
+        return AddedAt ?? Date(timeIntervalSince1970: 0)
+    }
+    
+    func addedAtString() -> String {
+        return Utils.dateToString(AddedAt) ?? "Unknown"
+    }
+    
     
     func userPreferredOrderTimestamp() -> String {
         return Utils.dateToString(UserPreferredOrderTimestamp) ?? "Never from this Device"
@@ -140,9 +159,5 @@ struct WiFiData: Hashable, Codable, Identifiable {
         return "No Login Date"
     }
     
-    func addedAt() -> String {
-        return Utils.dateToString(AddedAt) ?? "Unknown"
-    }
-   
 
 }

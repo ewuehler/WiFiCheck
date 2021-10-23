@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import Dispatch
 import SwiftUI
 
 extension Date {
     func currentTimeMillis() -> Int64 {
         return Int64(self.timeIntervalSince1970 * 1000)
+    }
+    
+    func moreRecentThan(_ date: Date) -> Bool {
+        return self > date
     }
 }
 
@@ -102,6 +107,47 @@ class Utils {
         } else {
             return getSecurityColor(wifidata)
         }
+    }
+    
+    
+    static func getPreferredNetworkOrder() -> Dictionary<String,Int> {
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: "/usr/sbin/networksetup")
+        task.arguments = ["-listpreferredwirelessnetworks", "en0"]
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+        
+        do {
+            try task.run()
+        } catch {
+            return Dictionary<String,Int>()
+        }
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+        
+        let output = String(decoding: outputData, as: UTF8.self)
+        let error = String(decoding: errorData, as: UTF8.self)
+        
+        print("Output: \(output)")
+        print("Error: \(error)")
+
+        var prefWiFi: Dictionary<String,Int> = [:]
+        
+        if output.isEmpty {
+            print("Unable to find preferred networks") // need to throw an exception here
+        } else {
+            let networks = output.components(separatedBy: .newlines).dropFirst()
+            var i = 100
+            for network in networks {
+                let n = network.trimmingCharacters(in: .whitespacesAndNewlines)
+                prefWiFi[n] = i
+                i = i+100
+            }
+        }
+        
+        return prefWiFi
     }
     
 }
