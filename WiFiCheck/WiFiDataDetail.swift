@@ -17,29 +17,35 @@ struct WiFiDataDetail: View {
         
         ScrollView {
             VStack(alignment: .leading) {
-                HStack() {
-                    Text("Network:").font(.title).foregroundColor(.secondary)
-                    Label {
-                        Text(wifidata.ssidString())
-                            .font(.title)
-                            .foregroundColor(.primary)
-                    } icon: {
-                        Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
-                            .font(.system(.title))
+                VStack(alignment: .leading) {
+                    HStack() {
+                        Text("Network:").font(.title).foregroundColor(.secondary)
+                        Label {
+                            Text(wifidata.ssidString())
+                                .font(.title)
+                                .foregroundColor(.primary)
+                        } icon: {
+                            Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
+                                .font(.system(.title))
+                        }
+                        .help(wifidata.SupportedSecurityTypes)
                     }
-                    .help(wifidata.SupportedSecurityTypes)
+                    Spacer()
+                    HStack() {
+                        Text("Security: "+wifidata.SupportedSecurityTypes).font(.subheadline).foregroundColor(.secondary)
+                    }
                 }
                 Spacer()
+                Divider()
                 Spacer()
                 HStack {
                     VStack(alignment: .center) {
                         Text("Last Joined").font(.system(size: 18))
-                        
                         HStack {
                             VStack{
                                 WiFiDateBox(date: wifidata.JoinedByUserAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedByUserAt))
                                 Text("By User").foregroundColor(.gray)
-                            }
+                            }.padding(.trailing, 10)
                             VStack {
                                 WiFiDateBox(date: wifidata.JoinedBySystemAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedBySystemAt))
                                 Text("By System").foregroundColor(.gray)
@@ -48,8 +54,14 @@ struct WiFiDataDetail: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text("Added by: "+wifidata.AddReason)
-                        Text("Added at: "+wifidata.addedAtString())
+                        VStack(alignment: .center) {
+                        Text("Added On").font(.system(size: 18))
+                        HStack {
+                            VStack(alignment: .trailing) {
+                                WiFiDateBox(date: wifidata.AddedAt, color: Utils.getDateBoxColor(wifidata, wifidata.AddedAt))
+                            }
+                        }}
+                        Text("\(wifidata.AddReason)").foregroundColor(.gray)
                     }
                 }
                 Divider()
@@ -76,10 +88,10 @@ struct WiFiDataDetail: View {
                     Divider()
                     ChannelHistoryView(channelData: wifidata.ChannelHistory)
                 }
-                if (wifidata.BSSIDList.count > 0) {
-                    Divider()
-                    BSSIDListView(bssidData: wifidata.BSSIDList)
-                }
+//                if (wifidata.BSSIDList.count > 0) {
+//                    Divider()
+//                    BSSIDListView(bssidData: wifidata.BSSIDList)
+//                }
             }
             .padding()
             
