@@ -37,26 +37,39 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ListPane()
-            Text("Select WiFi Network")
-//            VStack {
-//                Text("Known WiFi Networks").frame(maxWidth: .infinity, alignment: .leading)
-//                List(wifidatalist) { wifidata in
-//                    NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)) {
-//                        WiFiDataRow(wifidata: wifidata)
-//                    }
-//                }
-//                .listStyle(SidebarListStyle())
-//            }
+            DetailPane()
+        }.toolbar {
+            ToolbarItem(placement: .navigation) {
+                Button(action: toggleSidebar, label: {
+                    Image(systemName: "sidebar.leading")
+                }).padding(0)
+            }
         }
+    }
+    
+    private func toggleSidebar() {
+        #if os(iOS)
+        #else
+        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+        #endif
     }
 }
 
 struct ListPane: View {
     @State private var selectedSort = SortableMenu.preferredOrder
     @State private var wifidataArray = wifidatalist
+    @State private var sortString = "Preferred"
     var body: some View {
         VStack {
-            Text("WiFi Networks").bold()
+            List {
+                Section(header: Text("WiFi Networks: \(sortString)")) {
+                    ForEach(wifidataArray) { wifidata in
+                        NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)){
+                            WiFiDataRow(wifidata: wifidata)
+                        }
+                    }
+                }
+            }
             Picker("Sort by: ", selection: $selectedSort) {
                 ForEach(SortableMenu.allCases) { sm in
                     HStack() {
@@ -66,6 +79,7 @@ struct ListPane: View {
                 }
             }
             .onChange(of: selectedSort) { sm in
+                sortString = sm.title
                 if sm == .preferredOrder {
                     wifidataArray = sortByPreferredOrder(wifidatalist)
                 } else if sm == .recent {
@@ -75,21 +89,21 @@ struct ListPane: View {
                     wifidataArray = sortByAlphabetical(wifidatalist)
                 }
             }
-            List(wifidataArray) { wifidata in
-                NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)){
-                    WiFiDataRow(wifidata: wifidata)
-                }
-            }
+            Spacer()
         }
         .pickerStyle(MenuPickerStyle())
-        .frame(minWidth: 100, idealWidth: 250, maxWidth: 350, minHeight: 400, idealHeight: .infinity, maxHeight: .infinity)
     }
 }
 
 struct DetailPane: View {
     var body: some View {
-        WiFiDataDetail(wifidata: wifidatalist[0])
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        VStack() {
+            HStack() {
+                Image(systemName: "arrow.left.circle.fill").font(.system(.title))
+                Text("Select WiFi Network").font(.title)
+            }
+        }.frame(minWidth: 400)
+        
     }
 }
 

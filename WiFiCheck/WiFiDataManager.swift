@@ -9,6 +9,7 @@ import Foundation
 
 fileprivate let systemConfigurationFolder: String = "/Library/Preferences"
 fileprivate let wifiKnownNetworksFile: String = "com.apple.wifi.known-networks.plist"
+//fileprivate let ncprefs: String = "/Users/ewuehler/Library/Preferences/com.apple.ncprefs.plist"
 
 var wifidatalist: Array<WiFiData> = load(systemConfigurationFolder+"/"+wifiKnownNetworksFile)
 
@@ -233,13 +234,19 @@ func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
 
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
+    
+//    let _ncfileurl = URL(fileURLWithPath: ncprefs)
+//    let _ncdata = try! Data(contentsOf: _ncfileurl)
+//    let _ncprefs = try! PropertyListSerialization.propertyList(from: _ncdata, options: .mutableContainersAndLeaves, format: nil)
+//    print("\(_ncprefs)")
+    
 //    print("filename: \(filename)")
 //    print("exists: \(FileManager.default.fileExists(atPath: filename))")
     let _fileurl = URL(fileURLWithPath: filename)
     let _data = try! Data(contentsOf: _fileurl)
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
 //    let _rawContent = NSDictionary(contentsOfFile: filename)
-    print("\(_rawContent)")
+//    print("\(_rawContent)")
     var _knownNetworks: Array<WiFiData> = []
     let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
 //    var count: Int = 0

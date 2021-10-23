@@ -17,6 +17,7 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var AddedAt: Date? = nil
     var CaptiveProfile: Array<CaptiveProfileData> = []
     
+    var PasswordSharingDisabled: Bool = true //something new?
     var Hidden: Bool = false
     
     var JoinedBySystemAt: Date? = nil
@@ -37,6 +38,9 @@ struct WiFiData: Hashable, Codable, Identifiable {
     var UserPreferredOrderTimestamp: Date? = nil
     var WasHiddenBefore: Date? = nil
     
+    enum SecurityType {
+        case unknown, open, wep, wpa, wpa2, wpa3
+    }
 
     struct CaptiveProfileData: Hashable, Codable, Identifiable {
         var id: Self { self }
@@ -75,6 +79,22 @@ struct WiFiData: Hashable, Codable, Identifiable {
             return String(data: ssid, encoding: .utf8)!
         } else {
             return "Unknown"
+        }
+    }
+    
+    func securityType() -> SecurityType {
+        if SupportedSecurityTypes.contains("WPA3") {
+            return .wpa3
+        } else if (SupportedSecurityTypes.contains("WPA2") && !SupportedSecurityTypes.contains("WPA3")) {
+            return .wpa2
+        } else if (SupportedSecurityTypes.contains("WPA")) {
+            return .wpa
+        } else if (SupportedSecurityTypes.contains("WEP")) {
+            return .wep
+        } else if (SupportedSecurityTypes.contains("Open")) {
+            return .open
+        } else {
+            return .unknown
         }
     }
     

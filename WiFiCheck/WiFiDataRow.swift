@@ -12,7 +12,10 @@ struct WiFiDataRow: View {
     var wifidata: WiFiData
     
     var body: some View {
-        if wifidata.SupportedSecurityTypes.contains("WPA3") {
+        
+        let stype = wifidata.securityType()
+        switch stype {
+        case .wpa3:
             Label {
                 Text(wifidata.ssidString())
                     .font(.body)
@@ -21,7 +24,7 @@ struct WiFiDataRow: View {
                 Image(systemName: "wifi").renderingMode(.template)
             }
             .accentColor(.green)
-        } else if (wifidata.SupportedSecurityTypes.contains("WPA") && !wifidata.SupportedSecurityTypes.contains("WPA3")) {
+        case .wpa2:
             Label {
                 Text(wifidata.ssidString())
                     .font(.body)
@@ -30,7 +33,16 @@ struct WiFiDataRow: View {
                 Image(systemName: "wifi").renderingMode(.template)
             }
             .accentColor(Color(NSColor.systemTeal))
-        } else if wifidata.SupportedSecurityTypes.contains("WEP") {
+        case .wpa:
+            Label {
+                Text(wifidata.ssidString())
+                    .font(.body)
+                    .foregroundColor(.primary)
+            } icon: {
+                Image(systemName: "wifi").renderingMode(.template)
+            }
+            .accentColor(Color(NSColor.systemTeal))
+        case .wep:
             Label {
                 Text(wifidata.ssidString())
                     .font(.body)
@@ -39,7 +51,7 @@ struct WiFiDataRow: View {
                 Image(systemName: "wifi").renderingMode(.template)
             }
             .accentColor(.yellow)
-        } else if wifidata.SupportedSecurityTypes.contains("Open") {
+        case .open:
             Label {
                 Text(wifidata.ssidString())
                     .font(.body)
@@ -48,7 +60,7 @@ struct WiFiDataRow: View {
                 Image(systemName: "wifi").renderingMode(.template)
             }
             .accentColor(.red)
-        } else {
+        case .unknown:
             Label {
                 Text(wifidata.ssidString())
                     .font(.body)

@@ -10,21 +10,40 @@ import SwiftUI
 struct WiFiDataDetail: View {
     var wifidata: WiFiData
     
+    var circleSize: CGFloat = 26.0
+    var circleColor: Color = Color(white:0.4, opacity: 0.2)
+
     var body: some View {
-        VStack {
+        
+        ScrollView {
             VStack(alignment: .leading) {
-                Text(wifidata.ssidString())
-                    .font(.title)
-                    .foregroundColor(.primary)
+                HStack() {
+                    Text("Network:").font(.title).foregroundColor(.secondary)
+                    Label {
+                        Text(wifidata.ssidString())
+                            .font(.title)
+                            .foregroundColor(.primary)
+                    } icon: {
+                        Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
+                            .font(.system(.title))
+                    }
+                    .help(wifidata.SupportedSecurityTypes)
+                }
+                Spacer()
+                Spacer()
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .center) {
+                        Text("Last Joined").font(.system(size: 18))
+                        
                         HStack {
-                            Text("Joined by User at: ")
-                            Text(wifidata.joinedByUserAt())
-                        }
-                        HStack {
-                            Text("Joined by System at:")
-                            Text(wifidata.joinedBySystemAt())
+                            VStack{
+                                WiFiDateBox(date: wifidata.JoinedByUserAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedByUserAt))
+                                Text("By User").foregroundColor(.gray)
+                            }
+                            VStack {
+                                WiFiDateBox(date: wifidata.JoinedBySystemAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedBySystemAt))
+                                Text("By System").foregroundColor(.gray)
+                            }
                         }
                     }
                     Spacer()
@@ -33,8 +52,6 @@ struct WiFiDataDetail: View {
                         Text("Added at: "+wifidata.addedAt())
                     }
                 }
-                .font(.subheadline)
-                .foregroundColor(.secondary)
                 Divider()
                 VStack(alignment: .leading) {
                     Text("Security: "+wifidata.SupportedSecurityTypes).font(.title2)
