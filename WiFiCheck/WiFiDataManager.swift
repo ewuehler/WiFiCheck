@@ -210,7 +210,7 @@ func sortByPreferredOrder(_ items: [WiFiData]) -> [WiFiData] {
     }
 }
 
-func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
+func sortByRecentUser(_ items: [WiFiData]) -> [WiFiData] {
     items.sorted { a, b in
         if a.joinedByUserAt() == b.joinedByUserAt() {
             if a.joinedBySystemAt() == b.joinedBySystemAt() {
@@ -224,6 +224,24 @@ func sortByRecent(_ items: [WiFiData]) -> [WiFiData] {
             }
         } else {
             return a.joinedByUserAt().moreRecentThan(b.joinedByUserAt())
+        }
+    }
+}
+
+func sortByRecentSystem(_ items: [WiFiData]) -> [WiFiData] {
+    items.sorted { a, b in
+        if a.joinedBySystemAt() == b.joinedBySystemAt() {
+            if a.joinedByUserAt() == b.joinedByUserAt() {
+                if a.addedAt() == b.addedAt() {
+                    return a.ssidString() < b.ssidString()
+                } else {
+                    return a.addedAt().moreRecentThan(b.addedAt())
+                }
+            } else {
+                return a.joinedByUserAt().moreRecentThan(b.joinedByUserAt())
+            }
+        } else {
+            return a.joinedBySystemAt().moreRecentThan(b.joinedBySystemAt())
         }
     }
 }

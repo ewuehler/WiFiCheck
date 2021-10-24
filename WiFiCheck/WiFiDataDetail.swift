@@ -28,7 +28,6 @@ struct WiFiDataDetail: View {
                             Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
                                 .font(.system(.title))
                         }
-                        .help(wifidata.SupportedSecurityTypes)
                     }
                     Spacer()
                     HStack() {
