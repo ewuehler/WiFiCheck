@@ -64,33 +64,38 @@ struct WiFiDataDetail: View {
                     }
                 }
                 Divider()
-                VStack(alignment: .leading) {
-                    Text("Security: "+wifidata.SupportedSecurityTypes).font(.title2)
-                    Text("Roaming Profile Type: "+wifidata.RoamingProfileType)
-                    Text("User Preferred Order: \(wifidata.userPreferredOrderTimestamp())")
-                }
-                VStack(alignment: .leading) {
-                    let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
-                    Text("Is Captive: "+captiveStr)
-                    if (wifidata.isCaptive()) {
-                        Text("Captive Login Date: "+wifidata.captiveLogin())
+                HStack {
+//                    VStack(alignment: .leading) {
+//                        Text("Roaming Profile Type: "+wifidata.RoamingProfileType)
+//                        Text("User Preferred Order: \(wifidata.userPreferredOrderTimestamp())")
+//                    }
+                    VStack(alignment: .leading) {
+                        Text("Details").bold()
+                        let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
+                        Text("Is Captive: "+captiveStr)
+                        if (wifidata.isCaptive()) {
+                            Text("Captive Login Date: "+wifidata.captiveLogin())
+                        }
+                        Text("Hidden: "+String(wifidata.Hidden))
+                        Text("System Mode: "+String(wifidata.SystemMode))
+                        Text("Disabled: "+String(wifidata.TemporarilyDisabled))
+                        if (wifidata.CollocatedGroup.count > 0) {
+                            Divider()
+                            CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
+                        }
                     }
-                    Text("Hidden: "+String(wifidata.Hidden))
-                    Text("System Mode: "+String(wifidata.SystemMode))
-                    Text("Disabled: "+String(wifidata.TemporarilyDisabled))
-                }
-                if (wifidata.CollocatedGroup.count > 0) {
+                    Spacer()
                     Divider()
-                    CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
-                }
-                if (wifidata.ChannelHistory.count > 0) {
-                    Divider()
-                    ChannelHistoryView(channelData: wifidata.ChannelHistory)
-                }
+                    VStack(alignment: .trailing) {
+                        if (wifidata.ChannelHistory.count > 0) {
+                            ChannelHistoryView(channelData: wifidata.ChannelHistory)
+                        }
+                    }
 //                if (wifidata.BSSIDList.count > 0) {
 //                    Divider()
 //                    BSSIDListView(bssidData: wifidata.BSSIDList)
 //                }
+                }
             }
             .padding()
             
@@ -105,29 +110,34 @@ struct CollocatedGroupView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Collocated Group").bold()
-        }
-        ForEach(collocatedGroups) { cgd in
-            Text("\(String(cgd.ssid))")
+            Text("Networks At Same Location").bold()
+            ForEach(collocatedGroups) { cgd in
+                Text("\(String(cgd.ssid))")
+            }
         }
     }
 }
 
 struct ChannelHistoryView: View {
     var channelData: [WiFiData.ChannelData]
-    
     var body: some View {
         VStack(alignment: .leading) {
             Text("Channel History").bold()
+            Spacer()
             ForEach(channelData) { cd in
                 HStack() {
-                    Text("\(cd.Channel)")
-                    Text("\(cd.joinedTime())")
+                    Text("\(cd.Channel)").foregroundColor(.white).padding(0)        .frame(width: 40, height: 26, alignment: .center).background(Color.black).clipShape(Capsule())
+                    Text("\(cd.joinedTime())").foregroundColor(.white).padding(0)
+                        .frame(width: 200, height: 26, alignment: .center)
+                        .background(Color.accentColor).clipShape(Capsule())
                 }
+                Spacer()
             }
         }
     }
 }
+
+
 
 struct BSSIDListView: View {
     var bssidData: [WiFiData.BSSIDData]

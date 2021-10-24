@@ -53,7 +53,7 @@ struct WiFiData: Hashable, Codable, Identifiable {
     struct ChannelData: Hashable, Codable, Identifiable {
         var id: Self { self }
         var Channel: Int = -1
-        var Timestamp: Date? = nil
+        var Timestamp: Date = Date(timeIntervalSince1970: 0)
         
         func joinedTime() -> String {
             return Utils.dateToString(Timestamp) ?? "Unknown"

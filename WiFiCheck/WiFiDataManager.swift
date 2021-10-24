@@ -123,6 +123,12 @@ fileprivate func findBSSIDList(_ value: AnyObject?) -> Array<WiFiData.BSSIDData>
     return bssidList
 }
 
+fileprivate func sortChannelHistory(_ items: [WiFiData.ChannelData]) -> [WiFiData.ChannelData] {
+    items.sorted { a, b in
+        return a.Timestamp.moreRecentThan(b.Timestamp)
+    }
+}
+
 fileprivate func findChannelHistory(_ value: AnyObject?) -> Array<WiFiData.ChannelData> {
     
     var channelHistory = Array<WiFiData.ChannelData>()
@@ -133,12 +139,11 @@ fileprivate func findChannelHistory(_ value: AnyObject?) -> Array<WiFiData.Chann
         for dict in arr {
             var chan = WiFiData.ChannelData()
             chan.Channel = findInt(dict[Channel])
-            chan.Timestamp = findDate(dict[Timestamp])
-            
+            chan.Timestamp = findDate(dict[Timestamp]) ?? Date(timeIntervalSince1970: 0)
             channelHistory.append(chan)
         }
     }
-    return channelHistory
+    return sortChannelHistory(channelHistory)
     
 }
 
@@ -301,14 +306,5 @@ func load(_ filename: String) -> Array<WiFiData> {
         _knownNetworks.append(wifidata)
     }
     return _knownNetworks
-}
-
-
-func dumpPList(_ filename: String) -> Bool {
-    let _fileurl = URL(fileURLWithPath: filename)
-    let _data = try! Data(contentsOf: _fileurl)
-    let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
-    print("\(_rawContent)")
-    return true
 }
 
