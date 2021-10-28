@@ -8,6 +8,7 @@
 import Foundation
 import Dispatch
 import SwiftUI
+import SecurityFoundation
 
 extension Date {
     func currentTimeMillis() -> Int64 {
@@ -17,6 +18,15 @@ extension Date {
     func moreRecentThan(_ date: Date) -> Bool {
         return self > date
     }
+}
+
+struct RuntimeError: Error {
+    enum ErrorKind {
+        case taskRun
+        case noOutput
+    }
+    let message: String
+    let kind: ErrorKind
 }
 
 class Utils {
@@ -109,6 +119,35 @@ class Utils {
         }
     }
     
+    static func runCommand(_ executable: String, withArgs args: [String], withEnvironment env: [String:String]? = nil) throws -> String {
+        let task = Process()
+        task.executableURL = URL(fileURLWithPath: executable)
+        task.arguments = args
+        if env != nil && env!.count > 0 {
+            task.environment = env
+        }
+        let outputPipe = Pipe()
+        let errorPipe = Pipe()
+        task.standardOutput = outputPipe
+        task.standardError = errorPipe
+        
+        do {
+            try task.run()
+        } catch {
+            throw RuntimeError(message: "\(error)", kind: .taskRun)
+        }
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+
+        let out = String(decoding: outputData, as: UTF8.self)
+        let err = String(decoding: errorData, as: UTF8.self)
+
+        if out.isEmpty {
+            throw RuntimeError(message: "\(err)", kind: .noOutput)
+        } else {
+            return out
+        }
+    }
     
 }
 

@@ -262,8 +262,13 @@ func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
 
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
-    
-    let _fileurl = URL(fileURLWithPath: filename)
+
+    var fileToRead = filename
+    if !FileManager.default.isReadableFile(atPath: filename) {
+            NSAppleScript(source: "do shell script \"sudo chmod 644 \(filename)\" with administrator privileges")!.executeAndReturnError(nil)
+    }
+
+    let _fileurl = URL(fileURLWithPath: fileToRead)
     let _data = try! Data(contentsOf: _fileurl)
     let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
     

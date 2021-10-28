@@ -15,53 +15,18 @@ class NetworkSetup {
     private var devicename: String = "en0"
     private let wifiservice: String = "Wi-Fi"
     
-    struct RuntimeError: Error {
-        enum ErrorKind {
-            case taskRun
-            case noOutput
-        }
-        let message: String
-        let kind: ErrorKind
-    }
-    
     init() {
         // Load the network setup
         // Get the device name
         setWiFiDevice()
     }
 
-    private func runCommand(_ executable: String, withArgs args: [String]) throws -> String {
-        let task = Process()
-        task.executableURL = URL(fileURLWithPath: executable)
-        task.arguments = args
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
         
-        do {
-            try task.run()
-        } catch {
-            throw RuntimeError(message: "\(error)", kind: .taskRun)
-        }
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-
-        let out = String(decoding: outputData, as: UTF8.self)
-        let err = String(decoding: errorData, as: UTF8.self)
-
-        if out.isEmpty {
-            throw RuntimeError(message: "\(err)", kind: .noOutput)
-        } else {
-            return out
-        }
-    }
-    
     private func setWiFiDevice() {
         var output: String = ""
         
         do {
-            output = try runCommand(networksetup, withArgs: ["-listallhardwareports"])
+            output = try Utils.runCommand(networksetup, withArgs: ["-listallhardwareports"])
         } catch let e as RuntimeError {
             print("RuntimeError: \(e.kind) - \(e.message)")
         } catch {
@@ -92,7 +57,7 @@ class NetworkSetup {
         var output: String = ""
         
         do {
-            output = try runCommand(networksetup, withArgs: ["-getairportnetwork", devicename])
+            output = try Utils.runCommand(networksetup, withArgs: ["-getairportnetwork", devicename])
         } catch let e as RuntimeError {
             print("RuntimeError: \(e.kind) - \(e.message)")
             return ssid
@@ -117,7 +82,7 @@ class NetworkSetup {
         var output: String = ""
         
         do {
-            output = try runCommand(networksetup, withArgs: ["-listpreferredwirelessnetworks", "en0"])
+            output = try Utils.runCommand(networksetup, withArgs: ["-listpreferredwirelessnetworks", "en0"])
         } catch let e as RuntimeError {
             print("RuntimeError: \(e.kind) - \(e.message)")
             return prefWiFi
