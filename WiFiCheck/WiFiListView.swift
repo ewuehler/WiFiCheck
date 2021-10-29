@@ -94,7 +94,7 @@ struct WiFiListPane: View {
                         }
                     }
 //                }
-            }
+            }.listStyle(SidebarListStyle())
         }
         .pickerStyle(MenuPickerStyle())
     }

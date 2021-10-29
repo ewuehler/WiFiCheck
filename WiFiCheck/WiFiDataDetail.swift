@@ -19,7 +19,6 @@ struct WiFiDataDetail: View {
             VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
                     HStack() {
-                        Text("Network:").font(.title).foregroundColor(.secondary)
                         Label {
                             Text(wifidata.ssidString())
                                 .font(.title)
@@ -39,28 +38,27 @@ struct WiFiDataDetail: View {
                 Spacer()
                 HStack {
                     VStack(alignment: .center) {
-                        Text("Last Joined").font(.system(size: 18))
+                        Text("Last Joined from this Mac").font(.headline)
                         HStack {
                             VStack{
-                                WiFiDateBox(date: wifidata.JoinedByUserAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedByUserAt))
-                                Text("By User").foregroundColor(.gray)
-                            }.padding(.trailing, 10)
-                            VStack {
                                 WiFiDateBox(date: wifidata.JoinedBySystemAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedBySystemAt))
-                                Text("By System").foregroundColor(.gray)
+                                Text("Automatically").foregroundColor(.secondary)
+                            }
+                            VStack {
+                                WiFiDateBox(date: wifidata.JoinedByUserAt, color: Utils.getDateBoxColor(wifidata, wifidata.JoinedByUserAt))
+                                Text("Manually").foregroundColor(.secondary)
                             }
                         }
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
                         VStack(alignment: .center) {
-                        Text("Added On").font(.system(size: 18))
-                        HStack {
-                            VStack(alignment: .trailing) {
+                            Text("Added On").font(.headline)
+//                            VStack(alignment: .trailing) {
                                 WiFiDateBox(date: wifidata.AddedAt, color: Utils.getDateBoxColor(wifidata, wifidata.AddedAt))
-                            }
-                        }}
-                        Text("\(wifidata.AddReason)").foregroundColor(.gray)
+//                            }
+                            Text("\(wifidata.AddReason)").foregroundColor(.secondary)
+                        }
                     }
                 }
                 Divider()
@@ -126,10 +124,22 @@ struct ChannelHistoryView: View {
             Spacer()
             ForEach(channelData) { cd in
                 HStack() {
-                    Text("\(cd.Channel)").foregroundColor(.white).padding(0)        .frame(width: 40, height: 26, alignment: .center).background(Color.black).clipShape(Capsule())
-                    Text("\(cd.joinedTime())").foregroundColor(.white).padding(0)
+                    Text("\(cd.Channel)")
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding(0)
+                        .frame(width: 40, height: 26, alignment: .center)
+                        .background(Color.black)
+                        .clipShape(Capsule())
+                    Text("\(cd.joinedTime())")
+                        .bold()
+                        .textCase(.uppercase)
+                        .foregroundColor(.white)
+                        .padding(0)
                         .frame(width: 200, height: 26, alignment: .center)
-                        .background(Color.accentColor).clipShape(Capsule())
+                        .background(Color.accentColor)
+                        .clipShape(Capsule())
+                        .help(Text("\(cd.joinedTime(false))"))
                 }
                 Spacer()
             }

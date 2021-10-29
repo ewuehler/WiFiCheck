@@ -263,7 +263,7 @@ func sortByAlphabetical(_ items: [WiFiData]) -> [WiFiData] {
 // Load data
 func load(_ filename: String) -> Array<WiFiData> {
 
-    var fileToRead = filename
+    let fileToRead = filename
     if !FileManager.default.isReadableFile(atPath: filename) {
             NSAppleScript(source: "do shell script \"sudo chmod 644 \(filename)\" with administrator privileges")!.executeAndReturnError(nil)
     }

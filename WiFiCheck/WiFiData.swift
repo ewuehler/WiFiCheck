@@ -55,9 +55,14 @@ struct WiFiData: Hashable, Codable, Identifiable {
         var Channel: Int = -1
         var Timestamp: Date = Date(timeIntervalSince1970: 0)
         
-        func joinedTime() -> String {
-            return Utils.dateToString(Timestamp) ?? "Unknown"
+        func joinedTime(_ relative: Bool = true) -> String {
+            if (relative) {
+                return Utils.relativeDateToString(Timestamp) ?? "Unknown"
+            } else {
+                return Utils.dateToString(Timestamp) ?? "Unknown"
+            }
         }
+        
     }
 
     struct BSSIDData: Hashable, Codable, Identifiable {

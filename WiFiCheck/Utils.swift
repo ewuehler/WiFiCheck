@@ -40,6 +40,20 @@ class Utils {
         return df.string(from: d!)
     }
     
+    static func relativeDateToString(_ d: Date?) -> String? {
+        if d == nil {
+            return nil
+        }
+        let rdf: RelativeDateTimeFormatter = RelativeDateTimeFormatter()
+        rdf.unitsStyle = .full
+        let check = Calendar.current.date(byAdding: .month, value: -9, to: Date())
+        if check != nil && d!.moreRecentThan(check!) {
+            return rdf.localizedString(for: d!, relativeTo: Date())
+        } else {
+            return "\(Utils.getDayString(d)) "+"\(Utils.getMonthShort(d)) "+"\(Utils.getYear(d))"
+        }
+    }
+    
     static func getTime(_ d: Date?) -> String {
         if d == nil {
             return ""
