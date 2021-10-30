@@ -19,14 +19,14 @@ struct WiFiCheckApp: App {
 }
 
 struct WiFiButtonStyle: ButtonStyle {
-    
+    var delete: Bool = false
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(.white)
-            .padding(0)
+            .padding(EdgeInsets(top:2, leading: 10, bottom: 2, trailing: 10))
             .font(.subheadline)
-            .background(Color.accentColor)
-            .clipShape(Capsule())
+            .background(delete ? Color.red : Color.gray)
+            .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
     }
 }
 

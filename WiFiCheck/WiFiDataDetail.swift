@@ -15,6 +15,9 @@ struct WiFiDataDetail: View {
     var circleColor: Color = Color(white:0.4, opacity: 0.2)
 
     @State private var showPassword = false
+    @State private var pwdShown = false
+    @State private var pwdText = "Show Password"
+    @State private var pwdIcon = "lock"
     
     var body: some View {
         
@@ -39,25 +42,33 @@ struct WiFiDataDetail: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        VStack(alignment: .center) {
+                        VStack(alignment: .trailing) {
                             if (showPassword) {
                                 let (res, pwd) = KeychainAccess.getWiFiPassword(forNetwork: wifidata.ssidString())
                                 if res {
                                     Text("\(pwd)").font(.system(.title, design: .monospaced))
                                 } else {
-                                    Text("**********").font(.title)
+                                    Text("**********").font(.system(.title, design: .monospaced))
                                 }
                             } else {
-                                Text("**********").font(.title)
+                                Text("**********").font(.system(.title, design: .monospaced))
                             }
                             Button(action:{
                                 showPassword.toggle()
+                                if (showPassword) {
+                                    self.pwdText = "Hide Password"
+                                    self.pwdIcon = "lock.slash"
+                                } else {
+                                    self.pwdText = "Show Password"
+                                    self.pwdIcon = "lock"
+                                }
                             }) {
                                 HStack {
-                                    Image(systemName: "eye")
-                                    Text("Password")
-                                }.padding(EdgeInsets(top:0, leading: 10, bottom: 0, trailing: 10))
-                            }.buttonStyle(WiFiButtonStyle())
+                                    Image(systemName: pwdIcon)
+                                    Text(pwdText)
+                                }//.padding(EdgeInsets(top:2, leading: 10, bottom: 2, trailing: 10))
+                            }
+                            .buttonStyle(WiFiButtonStyle())
                         }
                     }
                 }
@@ -124,8 +135,10 @@ struct WiFiDataDetail: View {
                 }
             }
             .padding()
-            
             Spacer()
+            VStack(alignment: .leading) {
+                Text("ciretose")
+            }
         }
     }
 }

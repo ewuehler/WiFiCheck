@@ -27,8 +27,8 @@ enum SortableMenu: String, CaseIterable, Identifiable {
         switch self {
         case .preferredOrder: return "star.fill"
         case .recentUser: return "person.circle.fill"
-        case .recentSystem: return "clock.fill"
-        case .alphabetical: return "square.stack.fill"
+        case .recentSystem: return "desktopcomputer"
+        case .alphabetical: return "arrow.up.arrow.down.square.fill"
         }
     }
 }
@@ -63,27 +63,30 @@ struct WiFiListPane: View {
     @State private var sortString = "Preferred"
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Sort by:").padding(.leading, 3).foregroundColor(.secondary)
-            Picker("", selection: $selectedSort) {
-                ForEach(SortableMenu.allCases) { sm in
-                    HStack() {
-                        Image(systemName: sm.image).renderingMode(.template)
-                        Text(sm.title)
-                    }.tag(sm)
+            HStack {
+                Text("Sort:").padding(.leading, 3).foregroundColor(.secondary)
+                Picker("", selection: $selectedSort) {
+                    ForEach(SortableMenu.allCases) { sm in
+                        HStack() {
+                            Image(systemName: sm.image).renderingMode(.template)
+                            Text(sm.title)
+                        }.tag(sm)
+                    }
                 }
-            }
-            .onChange(of: selectedSort) { sm in
-                sortString = sm.title
-                if sm == .preferredOrder {
-                    wifidataArray = WiFiDataManager.shared.sortByPreferredOrder()
-                } else if sm == .recentUser {
-                    wifidataArray = WiFiDataManager.shared.sortByRecentUser()
-                } else if sm == .recentSystem {
-                    wifidataArray = WiFiDataManager.shared.sortByRecentSystem()
-                } else {
-                    // Alphabetical
-                    wifidataArray = WiFiDataManager.shared.sortByAlphabetical()
+                .onChange(of: selectedSort) { sm in
+                    sortString = sm.title
+                    if sm == .preferredOrder {
+                        wifidataArray = WiFiDataManager.shared.sortByPreferredOrder()
+                    } else if sm == .recentUser {
+                        wifidataArray = WiFiDataManager.shared.sortByRecentUser()
+                    } else if sm == .recentSystem {
+                        wifidataArray = WiFiDataManager.shared.sortByRecentSystem()
+                    } else {
+                        // Alphabetical
+                        wifidataArray = WiFiDataManager.shared.sortByAlphabetical()
+                    }
                 }
+                .pickerStyle(MenuPickerStyle())
             }
             Divider()
             List {
@@ -96,7 +99,18 @@ struct WiFiListPane: View {
 //                }
             }.listStyle(SidebarListStyle())
         }
-        .pickerStyle(MenuPickerStyle())
+        Divider()
+        VStack {
+            Button(action:{
+                
+            }) {
+                HStack {
+                    Image(systemName: "trash")
+                    Text("Delete WiFi")
+                }
+            }
+            .buttonStyle(WiFiButtonStyle(delete: true))
+        }
     }
 }
 
