@@ -7,30 +7,58 @@
 
 import SwiftUI
 
+
 struct WiFiDataDetail: View {
-    var wifidata: WiFiData
+    var wifidata: WiFiData = WiFiDataManager.shared.getWiFiDataList().first ?? WiFiData()
     
     var circleSize: CGFloat = 26.0
     var circleColor: Color = Color(white:0.4, opacity: 0.2)
 
+    @State private var showPassword = false
+    
     var body: some View {
         
         ScrollView {
             VStack(alignment: .leading) {
-                VStack(alignment: .leading) {
-                    HStack() {
-                        Label {
-                            Text(wifidata.ssidString())
-                                .font(.title)
-                                .foregroundColor(.primary)
-                        } icon: {
-                            Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
-                                .font(.system(.title))
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading) {
+                        HStack() {
+                            Label {
+                                Text(wifidata.ssidString())
+                                    .font(.title)
+                                    .foregroundColor(.primary)
+                            } icon: {
+                                Image(systemName: "wifi").renderingMode(.template).foregroundColor(Utils.getSecurityColor(wifidata))
+                                    .font(.title)
+                            }
+                        }
+                        Spacer()
+                        HStack() {
+                            Text("Security: "+wifidata.SupportedSecurityTypes).font(.subheadline).foregroundColor(.secondary)
                         }
                     }
                     Spacer()
-                    HStack() {
-                        Text("Security: "+wifidata.SupportedSecurityTypes).font(.subheadline).foregroundColor(.secondary)
+                    VStack(alignment: .trailing) {
+                        VStack(alignment: .center) {
+                            if (showPassword) {
+                                let (res, pwd) = KeychainAccess.getWiFiPassword(forNetwork: wifidata.ssidString())
+                                if res {
+                                    Text("\(pwd)").font(.system(.title, design: .monospaced))
+                                } else {
+                                    Text("**********").font(.title)
+                                }
+                            } else {
+                                Text("**********").font(.title)
+                            }
+                            Button(action:{
+                                showPassword.toggle()
+                            }) {
+                                HStack {
+                                    Image(systemName: "eye")
+                                    Text("Password")
+                                }.padding(EdgeInsets(top:0, leading: 10, bottom: 0, trailing: 10))
+                            }.buttonStyle(WiFiButtonStyle())
+                        }
                     }
                 }
                 Spacer()
@@ -137,7 +165,7 @@ struct ChannelHistoryView: View {
                         .foregroundColor(.white)
                         .padding(0)
                         .frame(width: 200, height: 26, alignment: .center)
-                        .background(Color.accentColor)
+                        .background(Color.blue)
                         .clipShape(Capsule())
                         .help(Text("\(cd.joinedTime(false))"))
                 }
@@ -164,6 +192,6 @@ struct BSSIDListView: View {
 
 struct WiFiDataDetail_Previews: PreviewProvider {
     static var previews: some View {
-        WiFiDataDetail(wifidata: wifidatalist[0])
+        WiFiDataDetail(wifidata: WiFiDataManager.shared.getWiFiDataList().first ?? WiFiData())
     }
 }

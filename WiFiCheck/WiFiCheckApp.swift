@@ -18,3 +18,15 @@ struct WiFiCheckApp: App {
     }
 }
 
+struct WiFiButtonStyle: ButtonStyle {
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(.white)
+            .padding(0)
+            .font(.subheadline)
+            .background(Color.accentColor)
+            .clipShape(Capsule())
+    }
+}
+

@@ -59,7 +59,7 @@ struct WiFiListView: View {
 
 struct WiFiListPane: View {
     @State private var selectedSort = SortableMenu.preferredOrder
-    @State private var wifidataArray = wifidatalist
+    @State private var wifidataArray = WiFiDataManager.shared.getWiFiDataList()
     @State private var sortString = "Preferred"
     var body: some View {
         VStack(alignment: .leading) {
@@ -75,14 +75,14 @@ struct WiFiListPane: View {
             .onChange(of: selectedSort) { sm in
                 sortString = sm.title
                 if sm == .preferredOrder {
-                    wifidataArray = sortByPreferredOrder(wifidatalist)
+                    wifidataArray = WiFiDataManager.shared.sortByPreferredOrder()
                 } else if sm == .recentUser {
-                    wifidataArray = sortByRecentUser(wifidatalist)
+                    wifidataArray = WiFiDataManager.shared.sortByRecentUser()
                 } else if sm == .recentSystem {
-                    wifidataArray = sortByRecentSystem(wifidatalist)
+                    wifidataArray = WiFiDataManager.shared.sortByRecentSystem()
                 } else {
                     // Alphabetical
-                    wifidataArray = sortByAlphabetical(wifidatalist)
+                    wifidataArray = WiFiDataManager.shared.sortByAlphabetical()
                 }
             }
             Divider()

@@ -21,7 +21,6 @@ class NetworkSetup {
         setWiFiDevice()
     }
 
-        
     private func setWiFiDevice() {
         var output: String = ""
         

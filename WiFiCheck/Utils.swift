@@ -30,6 +30,7 @@ struct RuntimeError: Error {
 }
 
 class Utils {
+    
     static func dateToString(_ d: Date?) -> String? {
         if d == nil {
             return nil
@@ -162,6 +163,7 @@ class Utils {
             return out
         }
     }
+    
     
 }
 

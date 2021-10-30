@@ -76,9 +76,9 @@ struct WiFiDataRow: View {
 struct WiFiDataRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WiFiDataRow(wifidata: wifidatalist[0])
-            WiFiDataRow(wifidata: wifidatalist[1])
-            WiFiDataRow(wifidata: wifidatalist[2])
+            WiFiDataRow(wifidata: WiFiDataManager.shared.getWiFiDataList()[0])
+            WiFiDataRow(wifidata: WiFiDataManager.shared.getWiFiDataList()[1])
+            WiFiDataRow(wifidata: WiFiDataManager.shared.getWiFiDataList()[2])
         }
         .previewLayout(.fixed(width:250, height: 70))
     }
