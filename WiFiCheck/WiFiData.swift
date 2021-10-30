@@ -80,12 +80,23 @@ struct WiFiData: Hashable, Codable, Identifiable {
         var ssid: String = ""
     }
 
-
+   
     func ssidString() -> String {
         if let ssid = self.SSID {
             return String(data: ssid, encoding: .utf8)!
         } else {
             return "Unknown"
+        }
+    }
+    
+    func getSecurityName() -> String {
+        let name: String = SupportedSecurityTypes
+        if securityType() == .open {
+            return "\(name) (No Password)"
+        } else if securityType() == .unknown {
+            return "\(name) (Unknown)"
+        } else {
+            return name
         }
     }
     

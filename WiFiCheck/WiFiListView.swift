@@ -61,6 +61,9 @@ struct WiFiListPane: View {
     @State private var selectedSort = SortableMenu.preferredOrder
     @State private var wifidataArray = WiFiDataManager.shared.getWiFiDataList()
     @State private var sortString = "Preferred"
+    @State private var listSelection: WiFiData? = nil
+    @State private var showingAlert = false
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -89,7 +92,7 @@ struct WiFiListPane: View {
                 .pickerStyle(MenuPickerStyle())
             }
             Divider()
-            List {
+            List(selection: $listSelection) {
 //                Section(header: Text("WiFi Networks: \(sortString)")) {
                     ForEach(wifidataArray) { wifidata in
                         NavigationLink(destination: WiFiDataDetail(wifidata: wifidata)){
@@ -97,20 +100,38 @@ struct WiFiListPane: View {
                         }
                     }
 //                }
-            }.listStyle(SidebarListStyle())
+            }
+            .listStyle(SidebarListStyle())
         }
         Divider()
         VStack {
             Button(action:{
-                
+                showingAlert = true
             }) {
                 HStack {
                     Image(systemName: "trash")
                     Text("Delete WiFi")
                 }
             }
-            .buttonStyle(WiFiButtonStyle(delete: true))
+            .disabled(listSelection == nil)
+            .alert(isPresented: $showingAlert) {
+                Alert(
+                    title: Text("Are you sure you want to delete \"\(listSelection!.ssidString())\"?"),
+                    message: Text("This will remove \"\(listSelection!.ssidString())\" from your list of known WiFi Networks.  You can always rejoin the WiFi Network in the future."),
+                    primaryButton: .destructive(Text("Delete")) {
+                        _ = NetworkSetup.shared.deleteNetwork(listSelection!.ssidString())
+                        let idx = wifidataArray.firstIndex(of: listSelection!)
+                        if idx != nil {
+                            wifidataArray.remove(at: idx!)
+                            listSelection = nil
+                        }
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .buttonStyle(WiFiButtonStyle(delete: true, disabled: (listSelection == nil)))
         }
+        Spacer()
     }
 }
 

@@ -37,7 +37,7 @@ struct WiFiDataDetail: View {
                         }
                         Spacer()
                         HStack() {
-                            Text("Security: "+wifidata.SupportedSecurityTypes).font(.subheadline).foregroundColor(.secondary)
+                            Text("Security: "+wifidata.getSecurityName()).font(.subheadline).foregroundColor(.secondary)
                         }
                     }
                     Spacer()
@@ -68,7 +68,7 @@ struct WiFiDataDetail: View {
                                     Text(pwdText)
                                 }//.padding(EdgeInsets(top:2, leading: 10, bottom: 2, trailing: 10))
                             }
-                            .buttonStyle(WiFiButtonStyle())
+                            .buttonStyle(WiFiButtonStyle(disabled: (wifidata.securityType() == .open)))
                         }
                     }
                 }

@@ -307,9 +307,7 @@ class WiFiDataManager {
         let _data = try! Data(contentsOf: _fileurl)
         let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
         
-        let networksetup = NetworkSetup()
-        //    print("\(networksetup.getAirportNetwork())")
-        let preferredNetworks: Dictionary<String,Int> = networksetup.getPreferredNetworkOrder()
+        let preferredNetworks: Dictionary<String,Int> = NetworkSetup.shared.getPreferredNetworkOrder()
         //    print("\(preferredNetworks)")
         
         

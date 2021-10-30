@@ -8,6 +8,8 @@
 import Foundation
 
 class NetworkSetup {
+    
+    static let shared = NetworkSetup()
 
     fileprivate let airportCommand: String = "/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
@@ -81,7 +83,7 @@ class NetworkSetup {
         var output: String = ""
         
         do {
-            output = try Utils.runCommand(networksetup, withArgs: ["-listpreferredwirelessnetworks", "en0"])
+            output = try Utils.runCommand(networksetup, withArgs: ["-listpreferredwirelessnetworks", devicename])
         } catch let e as RuntimeError {
             print("RuntimeError: \(e.kind) - \(e.message)")
             return prefWiFi
@@ -100,5 +102,24 @@ class NetworkSetup {
             }
         }
         return prefWiFi
+    }
+    
+    func deleteNetwork(_ network: String) -> Bool {
+        var output: String = ""
+        do {
+            output = try Utils.runCommand(networksetup, withArgs: ["-removepreferredwirelessnetwork", devicename, network])
+        } catch let e as RuntimeError {
+            print("RuntimeError: \(e.kind) - \(e.message)")
+            return false
+        } catch {
+            print("Error: \(error))")
+            return false
+        }
+        if !output.isEmpty {
+            if output.contains("Removed") {
+                return true
+            }
+        }
+        return false
     }
 }
