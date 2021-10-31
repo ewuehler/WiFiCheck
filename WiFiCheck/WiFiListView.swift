@@ -74,26 +74,29 @@ struct WiFiListPane: View {
     var body: some View {
         if wifidataArray.count == 0 && WiFiDataManager.shared.needsPassword() {
             HStack(alignment: .top, spacing: 8) {
-                VStack(alignment:.leading) {
-                    Text("WiFi/Check").font(.title)
-                    Divider()
-                    Text("WiFi/Check provides information about WiFi Network connections known to your Mac. Some of this information comes from \"hidden\" preference files and other command line utilities.")
-                    Text("")
-                    Text("Apple has changed the default access in newer versions of macOS to the WiFi Known Networks file.  As such, you need to enter your password to be able to view this file.  Any modifications to the Known Networks file will reset file access and you'll need to enter your password again.")
+                VStack(alignment:.center) {
+                    VStack(alignment:.leading) {
+                        Text("WiFi/Check").font(.title)
+                        Divider()
+                        Text("WiFi/Check provides information about WiFi Network connections known to your Mac. This information comes from your Network System Preferences, hidden preferences files and command line utilities.")
+                        Text("")
+                        Text("Apple has changed the default access in newer versions of macOS to the WiFi Known Networks file.  As such, you need to enter your password to be able to view this file.  Any modifications to the Known Networks file will reset file access and you'll need to enter your password again.")
+                    }.padding()
                     VStack(alignment: .center) {
-                    Button(action:{
-                        WiFiDataManager.shared.reloadData()
-                        loadWiFiData()
-                        reloadView.toggle()
-                    }) {
-                        HStack {
-                            Image(systemName: "lock.rotation.open")
-                            Text("Enter Password")
+                        Button(action:{
+                            WiFiDataManager.shared.reloadData()
+                            loadWiFiData()
+                            reloadView.toggle()
+                        }) {
+                            HStack {
+                                Image(systemName: "lock.rotation.open")
+                                Text("Enter Password")
+                            }
                         }
+                        .buttonStyle(WiFiButtonStyle())
                     }
-                    .buttonStyle(WiFiButtonStyle())
-                    }
-                }.padding()
+                }
+                Spacer()
             }
             Spacer()
         } else {
@@ -174,9 +177,10 @@ struct WiFiListPane: View {
 struct WiFiDetailPane: View {
     var body: some View {
         VStack() {
-            HStack() {
+            if wifidataArray.count == 0 && WiFiDataManager.shared.needsPassword() {            HStack() {
                 Image(systemName: "arrow.left.circle.fill").font(.system(.title))
                 Text("Select WiFi Network").font(.title)
+            }
             }
         }.frame(minWidth: 400)
         
