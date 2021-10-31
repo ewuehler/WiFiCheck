@@ -282,8 +282,9 @@ class WiFiDataManager {
         return need
     }
     
-    func checkWiFiFile(atPath filename: String, withPassword password: String? = nil) {
+    func isWiFiFileReadable(atPath filename: String, withPassword password: String? = nil) -> Bool {
         if !FileManager.default.isReadableFile(atPath: filename) {
+            var errorInfo: NSDictionary?
             let script: NSAppleScript?
             if password != nil {
                 script = NSAppleScript(source: """
@@ -295,8 +296,10 @@ class WiFiDataManager {
             """)
             }
             
-            script!.executeAndReturnError(nil)
+            script!.executeAndReturnError(&errorInfo)
+            return (errorInfo == nil)
         }
+        return true
     }
     
     
@@ -313,7 +316,9 @@ class WiFiDataManager {
         //    } catch {
         //        print("Unable to get password")
         //    }
-        checkWiFiFile(atPath: filename)
+        if !isWiFiFileReadable(atPath: filename) {
+            return Array<WiFiData>()
+        }
         let _fileurl = URL(fileURLWithPath: filename)
         let _data = try! Data(contentsOf: _fileurl)
         let _rawContent = try! PropertyListSerialization.propertyList(from: _data, options: .mutableContainersAndLeaves, format: nil)
