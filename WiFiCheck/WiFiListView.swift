@@ -177,10 +177,11 @@ struct WiFiListPane: View {
 struct WiFiDetailPane: View {
     var body: some View {
         VStack() {
-            if wifidataArray.count == 0 && WiFiDataManager.shared.needsPassword() {            HStack() {
-                Image(systemName: "arrow.left.circle.fill").font(.system(.title))
-                Text("Select WiFi Network").font(.title)
-            }
+            if WiFiDataManager.shared.needsPassword() {
+                HStack() {
+                    Image(systemName: "arrow.left.circle.fill").font(.system(.title))
+                    Text("Select WiFi Network").font(.title)
+                }
             }
         }.frame(minWidth: 400)
         

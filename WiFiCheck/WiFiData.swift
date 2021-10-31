@@ -166,14 +166,28 @@ struct WiFiData: Hashable, Codable, Identifiable {
     
     func captiveLogin() -> String {
         if CaptiveProfile.count == 0 {
-            return "No Login Date"
+            return "Unknown"
         }
         let cpd: CaptiveProfileData? = CaptiveProfile[0]
         if cpd != nil {
-            return Utils.dateToString(cpd!.CaptiveWebSheetLoginDate) ?? "Unknown"
+            return Utils.relativeDateToString(cpd!.CaptiveWebSheetLoginDate) ?? "Unknown"
         }
-        return "No Login Date"
+        return "Unknown"
     }
-    
 
+    func hiddenStateText() -> String {
+        if Hidden  {
+            return "Hidden"
+        } else {
+            return "Visible"
+        }
+    }
+
+    func hiddenStateImage() -> String {
+        if Hidden {
+            return "eye.slash"
+        } else {
+            return "eye"
+        }
+    }
 }

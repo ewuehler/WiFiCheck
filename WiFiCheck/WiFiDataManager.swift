@@ -312,15 +312,6 @@ class WiFiDataManager {
     // Load data
     func load(_ filename: String) -> Array<WiFiData> {
         
-        //    do {
-        ////        try KeychainAccess.save(password: Data("password!".utf8), service: "com.ciretose.test", account: "eric")
-        ////        let pwd = try KeychainAccess.findPassword("JedWifi")
-        ////        print("Password: \(pwd)")
-        //        let pwd = try KeychainAccess.readPassword(service: "AirPort", account: "Liahona")
-        //        print("Password: \(String(decoding: pwd, as: UTF8.self))")
-        //    } catch {
-        //        print("Unable to get password")
-        //    }
         if !isWiFiFileReadable(atPath: filename) {
             return Array<WiFiData>()
         }
@@ -334,6 +325,7 @@ class WiFiDataManager {
         
         var _knownNetworks: Array<WiFiData> = []
         let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
+        print(knownNetworks)
         for (wifiKey, valueDict) in knownNetworks {
             let value = valueDict as! Dictionary<String,AnyObject>
             var wifidata = WiFiData()

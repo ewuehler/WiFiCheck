@@ -13,6 +13,7 @@
 		7B0A2532270A6E8B00A51D79 /* WiFiDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0A2531270A6E8B00A51D79 /* WiFiDataRow.swift */; };
 		7B0B6A86272CA6B1006053B8 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B0B6A85272CA6B1006053B8 /* NetworkExtension.framework */; };
 		7B0B6A88272CA8C3006053B8 /* KeychainAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B6A87272CA8C3006053B8 /* KeychainAccess.swift */; };
+		7B0B6A8B272F4823006053B8 /* sample2.json in Resources */ = {isa = PBXBuildFile; fileRef = 7B0B6A8A272F4823006053B8 /* sample2.json */; };
 		7B2086BD270A8C0E007A6500 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7B2086BC270A8C0E007A6500 /* sample.json */; };
 		7B2086BF270A9154007A6500 /* WiFiDataList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2086BE270A9154007A6500 /* WiFiDataList.swift */; };
 		7B2086C1270A991A007A6500 /* WiFiDataDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2086C0270A991A007A6500 /* WiFiDataDetail.swift */; };
@@ -34,6 +35,7 @@
 		7B0A2539270A7F3D00A51D79 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7B0B6A85272CA6B1006053B8 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		7B0B6A87272CA8C3006053B8 /* KeychainAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccess.swift; sourceTree = "<group>"; };
+		7B0B6A8A272F4823006053B8 /* sample2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample2.json; sourceTree = "<group>"; };
 		7B2086BC270A8C0E007A6500 /* sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample.json; sourceTree = "<group>"; };
 		7B2086BE270A9154007A6500 /* WiFiDataList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataList.swift; sourceTree = "<group>"; };
 		7B2086C0270A991A007A6500 /* WiFiDataDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiDataDetail.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				7B2086BC270A8C0E007A6500 /* sample.json */,
+				7B0B6A8A272F4823006053B8 /* sample2.json */,
 			);
 			path = SampleData;
 			sourceTree = "<group>";
@@ -195,6 +198,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B0B6A8B272F4823006053B8 /* sample2.json in Resources */,
 				7B3DEFE226EBF0DE007BE881 /* Preview Assets.xcassets in Resources */,
 				7B3DEFDF26EBF0DE007BE881 /* Assets.xcassets in Resources */,
 				7B2086BD270A8C0E007A6500 /* sample.json in Resources */,

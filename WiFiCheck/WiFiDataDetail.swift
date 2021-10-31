@@ -36,8 +36,27 @@ struct WiFiDataDetail: View {
                             }
                         }
                         Spacer()
-                        HStack() {
-                            Text("Security: "+wifidata.getSecurityName()).font(.subheadline).foregroundColor(.secondary)
+                        VStack(alignment: .leading) {
+                            Label {
+                                Text(wifidata.getSecurityName())
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            } icon: {
+                                Image(systemName: "lock")
+                                    .renderingMode(.template)
+                                    .foregroundColor(.secondary)
+                                    .font(.subheadline)
+                            }
+                            Label {
+                                Text(wifidata.hiddenStateText())
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            } icon: {
+                                Image(systemName: wifidata.hiddenStateImage())
+                                    .renderingMode(.template)
+                                    .foregroundColor(.secondary)
+                                    .font(.subheadline)
+                            }
                         }
                     }
                     Spacer()
@@ -107,31 +126,41 @@ struct WiFiDataDetail: View {
 //                        Text("User Preferred Order: \(wifidata.userPreferredOrderTimestamp())")
 //                    }
                     VStack(alignment: .leading) {
-                        Text("Details").bold()
-                        let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
-                        Text("Is Captive: "+captiveStr)
+//                        Text("Details").bold()
+//                        let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
+//                        Text("Is Captive: "+captiveStr)
                         if (wifidata.isCaptive()) {
-                            Text("Captive Login Date: "+wifidata.captiveLogin())
+                            Text("Captive Portal Last Login").bold()
+                            Text(wifidata.captiveLogin())
+                                .bold()
+                                .textCase(.uppercase)
+                                .foregroundColor(.white)
+                                .padding(0)
+                                .frame(width: 200, height: 26, alignment: .center)
+                                .background(Color(NSColor.systemBrown))
+                                .clipShape(Capsule())
                         }
-                        Text("Hidden: "+String(wifidata.Hidden))
-                        Text("System Mode: "+String(wifidata.SystemMode))
-                        Text("Disabled: "+String(wifidata.TemporarilyDisabled))
+//                        Text("Hidden: "+String(wifidata.Hidden))
+//                        Text("System Mode: "+String(wifidata.SystemMode))
+//                        Text("Disabled: "+String(wifidata.TemporarilyDisabled))
                         if (wifidata.CollocatedGroup.count > 0) {
                             Divider()
                             CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
                         }
+                        if (wifidata.BSSIDList.count > 0) {
+                            Divider()
+                            BSSIDListView(bssidData: wifidata.BSSIDList)
+                        }
                     }
                     Spacer()
-                    Divider()
+                    if (wifidata.ChannelHistory.count > 0) {
+                        Divider()
+                    }
                     VStack(alignment: .trailing) {
                         if (wifidata.ChannelHistory.count > 0) {
                             ChannelHistoryView(channelData: wifidata.ChannelHistory)
                         }
                     }
-//                if (wifidata.BSSIDList.count > 0) {
-//                    Divider()
-//                    BSSIDListView(bssidData: wifidata.BSSIDList)
-//                }
                 }
             }
             .padding()
