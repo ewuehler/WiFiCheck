@@ -117,7 +117,7 @@ struct WiFiListPane: View {
             .alert(isPresented: $showingAlert) {
                 Alert(
                     title: Text("Are you sure you want to delete \"\(listSelection!.ssidString())\"?"),
-                    message: Text("This will remove \"\(listSelection!.ssidString())\" from your list of known WiFi Networks.  You can always rejoin the WiFi Network in the future."),
+                    message: Text("This will remove \"\(listSelection!.ssidString())\" from your list of known WiFi Networks.  You can always rejoin this WiFi Network in the future."),
                     primaryButton: .destructive(Text("Delete")) {
                         _ = NetworkSetup.shared.deleteNetwork(listSelection!.ssidString())
                         let idx = wifidataArray.firstIndex(of: listSelection!)

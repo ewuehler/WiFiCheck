@@ -147,6 +147,7 @@
 				7B3DEFD326EBF0DC007BE881 /* Sources */,
 				7B3DEFD426EBF0DC007BE881 /* Frameworks */,
 				7B3DEFD526EBF0DC007BE881 /* Resources */,
+				7B0B6A89272E3A0E006053B8 /* Increment Build Number */,
 			);
 			buildRules = (
 			);
@@ -201,6 +202,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7B0B6A89272E3A0E006053B8 /* Increment Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7B3DEFD326EBF0DC007BE881 /* Sources */ = {
@@ -352,7 +374,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"WiFiCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 6D39SX3E6V;
-				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WiFiCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -378,7 +400,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"WiFiCheck/Preview Content\"";
 				DEVELOPMENT_TEAM = 6D39SX3E6V;
-				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = WiFiCheck/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
