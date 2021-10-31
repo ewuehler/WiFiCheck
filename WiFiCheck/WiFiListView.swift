@@ -73,20 +73,29 @@ struct WiFiListPane: View {
     
     var body: some View {
         if wifidataArray.count == 0 && WiFiDataManager.shared.needsPassword() {
-            VStack {
-                Text("Apple has changed the default access in newer versions of macOS to the WiFi Known Networks file.  As such, you need to enter your password to be able to view this file.  Any modifications to the Known Networks file will reset file access and you'll need to enter the password again.").padding()
-                Button(action:{
-                    WiFiDataManager.shared.reloadData()
-                    loadWiFiData()
-                    reloadView.toggle()
-                }) {
-                    HStack {
-                        Image(systemName: "lock.rotation.open")
-                        Text("Open File")
+            HStack(alignment: .top, spacing: 8) {
+                VStack(alignment:.leading) {
+                    Text("WiFi/Check").font(.title)
+                    Divider()
+                    Text("WiFi/Check provides information about WiFi Network connections known to your Mac. Some of this information comes from \"hidden\" preference files and other command line utilities.")
+                    Text("")
+                    Text("Apple has changed the default access in newer versions of macOS to the WiFi Known Networks file.  As such, you need to enter your password to be able to view this file.  Any modifications to the Known Networks file will reset file access and you'll need to enter your password again.")
+                    VStack(alignment: .center) {
+                    Button(action:{
+                        WiFiDataManager.shared.reloadData()
+                        loadWiFiData()
+                        reloadView.toggle()
+                    }) {
+                        HStack {
+                            Image(systemName: "lock.rotation.open")
+                            Text("Enter Password")
+                        }
                     }
-                }
-                .buttonStyle(WiFiButtonStyle())
+                    .buttonStyle(WiFiButtonStyle())
+                    }
+                }.padding()
             }
+            Spacer()
         } else {
             VStack(alignment: .leading) {
                 HStack {

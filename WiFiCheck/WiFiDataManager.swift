@@ -53,6 +53,11 @@ class WiFiDataManager {
     var wifidatalist: Array<WiFiData> = Array<WiFiData>()
     
     init() {
+        if FileManager.default.isReadableFile(atPath: systemConfigurationFolder+"/"+wifiKnownNetworksFile) {
+            reloadData()
+        } else {
+            print("Unable to load \(wifiKnownNetworksFile) - need to get user permissions")
+        }
     }
     
     func reloadData() {
