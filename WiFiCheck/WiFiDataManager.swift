@@ -53,9 +53,13 @@ class WiFiDataManager {
     var wifidatalist: Array<WiFiData> = Array<WiFiData>()
     
     init() {
+    }
+    
+    func reloadData() {
         wifidatalist = load(systemConfigurationFolder+"/"+wifiKnownNetworksFile)
         wifidatalist = sortByPreferredOrder()
     }
+    
     
     func getWiFiDataList() -> Array<WiFiData> {
         return wifidatalist
@@ -270,6 +274,13 @@ class WiFiDataManager {
         }
     }
     
+    func needsPassword() -> Bool {
+        let need = !FileManager.default.isReadableFile(atPath: systemConfigurationFolder+"/"+wifiKnownNetworksFile)
+        if !need {
+            reloadData()
+        }
+        return need
+    }
     
     func checkWiFiFile(atPath filename: String, withPassword password: String? = nil) {
         if !FileManager.default.isReadableFile(atPath: filename) {
