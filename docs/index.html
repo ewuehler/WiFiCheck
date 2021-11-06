@@ -24,15 +24,58 @@
 
 </head>
 <body>
-<div class="d-flex align-items-center justify-content-center" style="height: 512px;">
-    <div class="p-2">
-        <img class="img-fluid" src="wificheck512.png" />
+<div class="container">
+    <div class="row align-items-center justify-content-center">
+        <div class="p-2">
+            <img class="img-fluid" src="wificheck128.png" />
+        </div>
+        <div class="p-2">
+            <span style="font-size: 42pt; font-weight: bold;">WiFi/Check</span><br/>
+        </div>
     </div>
-    <div class="p-2">
-        <span style="font-size: 48pt; font-weight: bold;">WiFi/Check</span><br/>
-        <span style="font-size: 24pt">coming soon</span>
-</div>
-</div>
+    <div class="row p-2">
+        WiFi/Check is a simple app that displays information about the WiFi connections
+        made from your Mac.  In the upgrade from Big Sur to Monterrey, Apple changed the
+        permissions on the data file - so it now requires a password to access and any
+        modifications to the file will require a password to make the change.  This also
+        uses the command line utility - networksetup - for reading preferred order
+        and to remove a WiFi network from the list.
+    </div>
+    <div class="row p-2">
+        I built this mostly as an exercise to learn SwiftUI and scratch an itch.
+    </div>
+    <div class="row">
+        <img class="img-fluid" src="wificheckwindow.png" />
+    </div>
+    <div class="row p-2 align-items-center justify-content-center">
+        <a class="btn btn-dark" style="background-color: rebeccapurple;" href="https://drive.google.com/uc?export=download&id=1bQco76sNmrAPnL6S0N6udstlD1Opriur">Download</a>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row" style="color: gray">
+        SHA1: f145d0f4661df4d98fdc33b2d473826ae12b25bb<br/>
+        SHA256: d6cef7b581925788011f5810a880078e8690a425f5019b5f6eaf2e1951ab9077
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row" style="color: gray">
+        <p>PS: You can validate the hash of the download using &nbsp;<a class="badge" style="background-color: rebeccapurple; color: white" href="https://hashcheck.app">Hash/Check</a>.</p>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row p-2 align-items-center justify-content-center">
+        © 2021&nbsp;<a class="badge" style="background-color: rebeccapurple; color: white" href="https://ciretose.com">ciretose</a>
+    </div>
+ </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 crossorigin="anonymous"></script>
