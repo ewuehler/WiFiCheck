@@ -47,6 +47,7 @@ struct WiFiDataDetail: View {
                                     .foregroundColor(.secondary)
                                     .font(.subheadline)
                             }
+                            Spacer()
                             Label {
                                 Text(wifidata.hiddenStateText())
                                     .font(.subheadline)
@@ -121,14 +122,18 @@ struct WiFiDataDetail: View {
                 }
                 Divider()
                 HStack {
-//                    VStack(alignment: .leading) {
-//                        Text("Roaming Profile Type: "+wifidata.RoamingProfileType)
-//                        Text("User Preferred Order: \(wifidata.userPreferredOrderTimestamp())")
-//                    }
+                    VStack(alignment: .trailing) {
+                        if (wifidata.ChannelHistory.count > 0) {
+                            ChannelHistoryView(channelData: wifidata.ChannelHistory)
+                        }
+                    }
+                    if (wifidata.ChannelHistory.count > 0) {
+                        Divider()
+                    }
                     VStack(alignment: .leading) {
-//                        Text("Details").bold()
-//                        let captiveStr: String = (wifidata.isCaptive() == true) ? "Yes":"No"
-//                        Text("Is Captive: "+captiveStr)
+                        if (wifidata.CollocatedGroup.count > 0) {
+                            CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
+                        }
                         if (wifidata.isCaptive()) {
                             Text("Captive Portal Last Login").bold()
                             Text(wifidata.captiveLogin())
@@ -140,33 +145,17 @@ struct WiFiDataDetail: View {
                                 .background(Color(NSColor.systemBrown))
                                 .clipShape(Capsule())
                         }
-//                        Text("Hidden: "+String(wifidata.Hidden))
-//                        Text("System Mode: "+String(wifidata.SystemMode))
-//                        Text("Disabled: "+String(wifidata.TemporarilyDisabled))
-                        if (wifidata.CollocatedGroup.count > 0) {
-                            Divider()
-                            CollocatedGroupView(collocatedGroups: wifidata.CollocatedGroup)
-                        }
-                        if (wifidata.BSSIDList.count > 0) {
-                            Divider()
-                            BSSIDListView(bssidData: wifidata.BSSIDList)
-                        }
+                        Spacer()
                     }
                     Spacer()
-                    if (wifidata.ChannelHistory.count > 0) {
-                        Divider()
-                    }
-                    VStack(alignment: .trailing) {
-                        if (wifidata.ChannelHistory.count > 0) {
-                            ChannelHistoryView(channelData: wifidata.ChannelHistory)
-                        }
-                    }
                 }
             }
             .padding()
             Spacer()
             VStack(alignment: .leading) {
-                Text("ciretose")
+                Spacer()
+                Text("ciretose © 2021")
+                    .foregroundColor(Color.gray)
             }
         }
     }
@@ -180,7 +169,17 @@ struct CollocatedGroupView: View {
         VStack(alignment: .leading) {
             Text("Networks At Same Location").bold()
             ForEach(collocatedGroups) { cgd in
-                Text("\(String(cgd.ssid))")
+                (
+                    Text(Image(systemName: "wifi")) +
+                    Text(" \(String(cgd.ssid))")
+                )
+                .bold()
+                .foregroundColor(.white)
+                .padding(.leading, 20)
+                .padding(.trailing, 20)
+                .frame(height: 26, alignment: .center)
+                .background(Color.accentColor)
+                .clipShape(Capsule())
             }
         }
     }

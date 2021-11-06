@@ -25,6 +25,7 @@
 		7B6363392725077F0054A094 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6363382725077F0054A094 /* ContentView.swift */; };
 		7B63633B27250D220054A094 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B63633A27250D220054A094 /* TimeView.swift */; };
 		7B6FE0E72719408C00CF5CEB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6FE0E62719408C00CF5CEB /* Utils.swift */; };
+		7BCF2FA72737335E00ABC4D1 /* CheckboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCF2FA62737335E00ABC4D1 /* CheckboxView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		7B6363382725077F0054A094 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7B63633A27250D220054A094 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		7B6FE0E62719408C00CF5CEB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		7BCF2FA62737335E00ABC4D1 /* CheckboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				7B3DEFDA26EBF0DC007BE881 /* WiFiCheckApp.swift */,
+				7BCF2FA62737335E00ABC4D1 /* CheckboxView.swift */,
 				7B6363382725077F0054A094 /* ContentView.swift */,
 				7B0B6A87272CA8C3006053B8 /* KeychainAccess.swift */,
 				7B63633A27250D220054A094 /* TimeView.swift */,
@@ -236,6 +239,7 @@
 				7B0A2532270A6E8B00A51D79 /* WiFiDataRow.swift in Sources */,
 				7B6363392725077F0054A094 /* ContentView.swift in Sources */,
 				7B0A2530270A660200A51D79 /* WiFiDataManager.swift in Sources */,
+				7BCF2FA72737335E00ABC4D1 /* CheckboxView.swift in Sources */,
 				7B0A252E270A634200A51D79 /* WiFiData.swift in Sources */,
 				7B3DEFDD26EBF0DC007BE881 /* WiFiListView.swift in Sources */,
 				7B2086BF270A9154007A6500 /* WiFiDataList.swift in Sources */,

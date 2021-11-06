@@ -325,7 +325,7 @@ class WiFiDataManager {
         
         var _knownNetworks: Array<WiFiData> = []
         let knownNetworks: Dictionary = (_rawContent as? Dictionary<String,AnyObject>)!
-        print(knownNetworks)
+//        print(knownNetworks)
         for (wifiKey, valueDict) in knownNetworks {
             let value = valueDict as! Dictionary<String,AnyObject>
             var wifidata = WiFiData()

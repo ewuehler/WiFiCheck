@@ -66,6 +66,7 @@ struct WiFiListPane: View {
     @State private var listSelection: WiFiData? = nil
     @State private var showingAlert = false
     @State private var reloadView = false
+//    @State private var savePasswordChecked = false
     
     func loadWiFiData() {
         wifidataArray = WiFiDataManager.shared.getWiFiDataList()
@@ -94,6 +95,12 @@ struct WiFiListPane: View {
                             }
                         }
                         .buttonStyle(WiFiButtonStyle())
+                       
+//                        HStack {
+//                            CheckboxView(checked: $savePasswordChecked)
+//                            Spacer()
+//                            Text("Save password to Keychain")
+//                        }
                     }
                 }
                 Spacer()
