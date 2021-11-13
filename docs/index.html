@@ -7,7 +7,6 @@
     <meta name="author" content="Eric Wuehler">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Encode+Sans:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -20,10 +19,15 @@
             color: #000;
             background-color: antiquewhite;
         }
+
+        code {
+            color: rebeccapurple;
+        }
     </style>
 
 </head>
-<body>
+<body class="d-flex flex-column h-100">
+    <main class="flex-shrink-0">
 <div class="container">
     <div class="row align-items-center justify-content-center">
         <div class="p-2">
@@ -34,16 +38,17 @@
         </div>
     </div>
     <div class="row p-2">
-        WiFi/Check is a simple app that displays information about the WiFi connections
+        <p class="lead">WiFi/Check is a simple app that displays information about the WiFi connections
         made from your Mac.  In the upgrade from Big Sur to Monterrey, Apple changed the
         permissions on the data file - so it now requires a password to access and any
         modifications to the file will require a password to make the change.  This also
-        uses the command line utility - networksetup - for reading preferred order
+        uses the command line utility <code class="small">networksetup</code> for reading preferred order
         and to remove a WiFi network from the list and if you want to see the password for
         the WiFi Network stored in your Keychain, it will prompt for a password there, too.
+        </p>
     </div>
     <div class="row p-2">
-        I built this mostly as an exercise to learn SwiftUI and scratch an itch, runs on Big Sur and Monterrey.
+        <p class="lead">I built this mostly as an exercise to learn SwiftUI and scratch an itch, runs on Big Sur and Monterrey.</p>
     </div>
     <div class="row">
         <img class="img-fluid" src="wificheckwindow.png" />
@@ -54,29 +59,99 @@
     <div class="row">
         &nbsp;
     </div>
-    <div class="row" style="color: gray">
+    <div class="row p-2" style="color: gray">
+        <p>
         SHA1: f145d0f4661df4d98fdc33b2d473826ae12b25bb<br/>
         SHA256: d6cef7b581925788011f5810a880078e8690a425f5019b5f6eaf2e1951ab9077
+        </p>
+    </div>
+    <div class="row p-2" style="color: gray">
+        <p>PS: You can validate the hash of the download using <a style="color: rebeccapurple" href="https://hashcheck.app">Hash/Check</a>.</p>
     </div>
     <div class="row">
         &nbsp;
     </div>
-    <div class="row" style="color: gray">
-        <p>PS: You can validate the hash of the download using &nbsp;<a class="badge" style="background-color: rebeccapurple; color: white" href="https://hashcheck.app">Hash/Check</a>.</p>
+    <div class="row p-2">
+        <b>FAQ</b>
     </div>
-    <div class="row">
-        &nbsp;
+    <div class="row p-2">
+        <b>Should I trust an app I download from the internet?</b>
     </div>
-    <div class="row">
-        &nbsp;
+    <div class="row p-2">
+        <p>You should be skeptical of anything you download from some relatively unknown
+            location. The app has been notarized by Apple - which is not a guarantee
+            that it is "safe", but it means at least Apple has run it through whatever
+            "app checker" they have and didn't create any red flags. If they app requires
+            you to disable security for any reason, you got the wrong app.
+        </p>
     </div>
-    <div class="row">
-        &nbsp;
+    <div class="row p-2">
+        <b>Yeah, I'm not typing in my password in some random app I download.</b>
     </div>
-    <div class="row p-2 align-items-center justify-content-center">
-        © 2021&nbsp;<a class="badge" style="background-color: rebeccapurple; color: white" href="https://ciretose.com">ciretose</a>
+    <div class="row p-2">
+        <p>
+            Great! I wouldn't put my password into any app I just downloaded either.
+            If you're on Big Sur, you don't need to.  Apple change the permissions of the
+            known networks file in Monterrey that requires your password to access, specifically:<br/>
+            <code>/Library/Preferences/com.apple.wifi.known-networks.plist</code>
+        </p>
+        <p>
+            This is read and some of the data displayed is taken from this file.  If you are on
+            Monterrey and don't want to enter the password, you can open Terminal, and change the
+            permissions on the file yourself (that's all the app does) like this:<br/>
+            <code>sudo chmod 644 /Library/Preferences/com.apple.wifi.known-networks.plist</code>
+        </p>
+        <p>
+            There used to be a bunch more interesting information in this file but it seems
+            each release of macOS is getting rid of details, so not sure how much longer the
+            information will remain useful.
+        </p>
+    </div>
+    <div class="row p-2">
+        <b>Woah! You also want a password to show me my WiFi password?</b>
+    </div>
+    <div class="row p-2">
+        <p>
+            Yes.  However, if you want to find this information yourself, this can also
+            be found by opening the <code>Keychain Access</code> app from your
+            <code>/Applications/Utilities</code> folder, searching for your WiFi network
+            name, selecting the item in the list, clicking on the "Show password" checkbox...
+            Anyway, this was more of convenience, and it uses the Apple supplied Keychain APIs,
+            so the app never actually sees your password.
+        </p>
+    </div>
+    <div class="row p-2">
+        <b>What does "Remove WiFi" acutally do?  Will this delete my WiFi?</b>
+    </div>
+    <div class="row p-2">
+        <p>
+            No.  This removes the WiFi entry from your saved list of "known networks".  If you
+            remove the WiFi you will have to rejoin that WiFi just like you did the first
+            time.  Worst case scenario.
+        </p>
+    </div>
+    <div class="row p-2">
+        <b>Why would I bother removing the WiFi?</b>
+    </div>
+    <div class="row p-2">
+        <p>
+            I personally don't like keeping WiFi network information for networks I really
+            don't use on a regular basis. Especially if you keep "open" (networks with no passwords) around.
+            If somebody decides to spoof an open network in a coffee shop, you just might
+            join a network you don't expect to. Not a problem for most people, but keeping
+            your approved "known networks" list to a limited set is a personal preference.
+        </p>
     </div>
  </div>
+</main>
+<footer class="footer mt-auto py-3" style="background-color: rebeccapurple">
+    <div class="container">
+        <div class="row align-items-center justify-content-center" style="color: white">
+            © 2021&nbsp;<a style="color: white" href="https://ciretose.com">ciretose</a>
+        </div>
+    </div>
+
+</footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
 integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
 crossorigin="anonymous"></script>
