@@ -48,7 +48,7 @@
         </p>
     </div>
     <div class="row p-2">
-        <p class="lead">I built this mostly as an exercise to learn SwiftUI and scratch an itch, runs on Big Sur and Monterrey.</p>
+        <p class="lead">I built this mostly as an exercise to learn SwiftUI and scratch an itch.</p>
     </div>
     <div class="row">
         <img class="img-fluid" src="wificheckwindow.png" />
@@ -81,8 +81,8 @@
         <p>You should be skeptical of anything you download from some relatively unknown
             location. The app has been notarized by Apple - which is not a guarantee
             that it is "safe", but it means at least Apple has run it through whatever
-            "app checker" they have and didn't create any red flags. If they app requires
-            you to disable security for any reason, you got the wrong app.
+            "app checker" they have and didn't create any red flags. If the app requires
+            you to disable security for any reason (or the hashes above don't match what you downloaded), you have the wrong app.
         </p>
     </div>
     <div class="row p-2">
@@ -90,7 +90,7 @@
     </div>
     <div class="row p-2">
         <p>
-            Great! I wouldn't put my password into any app I just downloaded either.
+            Smart! I wouldn't put my password into any app I just downloaded either.
             If you're on Big Sur, you don't need to.  Apple change the permissions of the
             known networks file in Monterrey that requires your password to access, specifically:<br/>
             <code>/Library/Preferences/com.apple.wifi.known-networks.plist</code>
@@ -117,7 +117,7 @@
             <code>/Applications/Utilities</code> folder, searching for your WiFi network
             name, selecting the item in the list, clicking on the "Show password" checkbox...
             Anyway, this was more of convenience, and it uses the Apple supplied Keychain APIs,
-            so the app never actually sees your password.
+            so up to you.
         </p>
     </div>
     <div class="row p-2">
@@ -136,10 +136,17 @@
     <div class="row p-2">
         <p>
             I personally don't like keeping WiFi network information for networks I really
-            don't use on a regular basis. Especially if you keep "open" (networks with no passwords) around.
+            don't use on a regular basis. Especially if you keep "open" networks (aka no passwords) around.
             If somebody decides to spoof an open network in a coffee shop, you just might
             join a network you don't expect to. Not a problem for most people, but keeping
             your approved "known networks" list to a limited set is a personal preference.
+        </p>
+        <p>
+           You can also remove old WiFi connections outside the context of the app.  If you go into
+           your <code>System Settings</code> (or Preferences, depending on what version of macOS you're running), select
+           <code>Networks</code>, <code>Wi-Fi</code>, then click <code>Advanced...</code> you'll see a list of "Known Networks".
+           This should be the same list you see in the WiFi/Check app.  You can remove
+           items from the list here.  The app uses the command line <code>networksetup</code> to remove the network.
         </p>
     </div>
  </div>
