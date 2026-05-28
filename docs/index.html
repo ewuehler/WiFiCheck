@@ -23,6 +23,59 @@
         code {
             color: rebeccapurple;
         }
+
+        .verify-block {
+            margin-top: 6px;
+            text-align: center;
+        }
+        .verify-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .verify-hash {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.68rem;
+            color: #999;
+            word-break: break-all;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .btn-verify {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: 1px solid rebeccapurple;
+            color: rebeccapurple;
+            padding: 5px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-verify:hover {
+            background: rgba(102, 51, 153, 0.08);
+            color: rebeccapurple;
+            text-decoration: none;
+        }
+        .verify-status {
+            font-size: 0.75rem;
+            color: #888;
+            margin-left: 6px;
+        }
+        .verify-status.ok  { color: #2a9d6a; }
+        .verify-missing {
+            font-size: 0.75rem;
+            color: #c0392b;
+            margin-top: 4px;
+        }
+        .verify-missing a { color: #c0392b; }
     </style>
 
 </head>
@@ -52,12 +105,28 @@
                 <img class="img-fluid" src="wificheckwindow.png" />
             </div>
             <div class="row p-2 align-items-center justify-content-center">
-                <a class="btn-lg btn-dark" style="background-color: rebeccapurple;"
+                <a id="download-btn" class="btn-lg btn-dark" style="background-color: rebeccapurple;"
                     href="https://github.com/ciretose-code/WiFiCheck/releases/latest">Download</a>
             </div>
             <div class="row p-2 align-items-center justify-content-center" style="color: gray">
                 <small>macOS 26+ &nbsp;·&nbsp; <a style="color: rebeccapurple"
                         href="https://github.com/ciretose-code/WiFiCheck">GitHub</a></small>
+            </div>
+            <div id="verify-section" class="row p-2 align-items-center justify-content-center" hidden>
+                <div class="verify-block">
+                    <div class="verify-label">SHA-256 &mdash; <span id="verify-version"></span></div>
+                    <div id="sha256-display" class="verify-hash"></div>
+                    <div>
+                        <a id="verify-btn" href="#" class="btn-verify">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            Verify with Hash/Check
+                        </a>
+                        <span id="verify-status" class="verify-status"></span>
+                    </div>
+                    <div id="hc-missing" class="verify-missing" hidden>
+                        Hash/Check not installed. <a href="https://apps.apple.com/us/app/hash-check/id1550525767">Get it free →</a>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 &nbsp;
@@ -138,6 +207,96 @@
         </div>
 
     </footer>
+    <script>
+    (function () {
+        var REPO = 'ciretose-code/WiFiCheck';
+        var useIframe = !!window.chrome;
+
+        function tryDeepLink(url, onOk, onFail) {
+            var launched = false;
+            function onBlur() {
+                launched = true;
+                window.removeEventListener('blur', onBlur);
+                if (onOk) onOk();
+            }
+            window.addEventListener('blur', onBlur);
+            if (useIframe) {
+                var f = document.createElement('iframe');
+                f.style.cssText = 'display:none';
+                document.body.appendChild(f);
+                f.src = url;
+                setTimeout(function () {
+                    document.body.removeChild(f);
+                    window.removeEventListener('blur', onBlur);
+                    if (!launched && onFail) onFail();
+                }, 1000);
+            } else {
+                window.location.href = url;
+                setTimeout(function () {
+                    window.removeEventListener('blur', onBlur);
+                    if (!launched && onFail) onFail();
+                }, 1000);
+            }
+        }
+
+        function showVerify(hash, version) {
+            var section   = document.getElementById('verify-section');
+            var btn       = document.getElementById('verify-btn');
+            var hashEl    = document.getElementById('sha256-display');
+            var statusEl  = document.getElementById('verify-status');
+            var missingEl = document.getElementById('hc-missing');
+            var verEl     = document.getElementById('verify-version');
+
+            btn.href = 'hashcheck://hash/sha256/' + hash;
+            hashEl.textContent = hash;
+            if (version) verEl.textContent = version;
+            section.hidden = false;
+
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                statusEl.textContent = 'Launching…';
+                statusEl.className = 'verify-status';
+                missingEl.hidden = true;
+                tryDeepLink(btn.href,
+                    function () { statusEl.textContent = '✓ Launched'; statusEl.className = 'verify-status ok'; },
+                    function () { statusEl.textContent = ''; statusEl.className = 'verify-status'; missingEl.hidden = false; }
+                );
+            });
+        }
+
+        function findHash(release) {
+            var assets = release.assets || [];
+            for (var i = 0; i < assets.length; i++) {
+                if (/\.sha256$/i.test(assets[i].name)) {
+                    return fetch(assets[i].browser_download_url)
+                        .then(function (r) { return r.text(); })
+                        .then(function (t) {
+                            var m = t.match(/([0-9a-fA-F]{64})/);
+                            return m ? m[1].toLowerCase() : null;
+                        });
+                }
+            }
+            var body = release.body || '';
+            var m = body.match(/\b([0-9a-fA-F]{64})\b/);
+            return Promise.resolve(m ? m[1].toLowerCase() : null);
+        }
+
+        fetch('https://api.github.com/repos/' + REPO + '/releases/latest')
+            .then(function (r) { return r.json(); })
+            .then(function (release) {
+                var dmg = (release.assets || []).find(function (a) { return /\.dmg$/i.test(a.name); });
+                if (dmg) {
+                    var btn = document.getElementById('download-btn');
+                    btn.href = dmg.browser_download_url;
+                    btn.setAttribute('download', dmg.name);
+                }
+                return findHash(release).then(function (hash) {
+                    if (hash) showVerify(hash, release.tag_name);
+                });
+            })
+            .catch(function () { /* silently fail */ });
+    }());
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
